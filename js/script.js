@@ -660,9 +660,9 @@ if (!details || !details['Match-Info']) {
   }
 }
 
-async function fetchStats(match) {
+async function fetchStats(Matchid) {
   document.querySelector('#tab-stats').innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
-  const apiUrl = `https://ko.best-goal.live/state.php?match_id=${match['Match-id']}`;
+  const apiUrl = `https://ko.best-goal.live/state.php?match_id=${Matchid}`;
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
@@ -1049,6 +1049,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
