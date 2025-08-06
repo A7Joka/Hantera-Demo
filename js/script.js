@@ -476,6 +476,8 @@ async function fetchMatches(dateString) {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error('API Error');
         const data = await response.json();
+      console.log("data returned from API 🔍", data);
+
         allMatchesData = data?.['STING-WEB-Matches'] || [];
         displayMatches(allMatchesData);
     } catch (error) {
@@ -613,9 +615,18 @@ async function fetchEventsAndLineup(match) {
   const apiUrl = `https://ko.best-goal.live/state.php?match_id=${match['Match-id']}&time=${userTimeZone}`;
 
   try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    const details = data['STING-WEB-Match-Details'];
+const response = await fetch(apiUrl);
+const data = await response.json();
+console.log("data from API", data); // 🌟 للمراجعة
+
+const details = data; // ✅ مش data['STING-WEB-Match-Details']
+
+if (!details || !details['Match-Info']) {
+  console.error("No Match-Info found in details!", details);
+  throw new Error("Missing Match-Info");
+}
+
+
 
     const matchStatus = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
       : match['Match-Status'] === 'انتهت' ? 'status-finished'
@@ -1038,6 +1049,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
