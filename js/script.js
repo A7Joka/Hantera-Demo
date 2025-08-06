@@ -244,116 +244,227 @@ function displayTransfers(transfers) {
 
 function renderInfo(info, match) {
     const panel = document.getElementById('tab-info');
-    if (!info || !match) { panel.innerHTML = "<p style='text-align:center;'>التفاصيل غير متاحة.</p>"; return; }
-    const matchTime = new Date(match['Time-Start']);
-    const formattedDateTime = matchTime.toLocaleString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
+    if (!info || !match) {
+        panel.innerHTML = "<p style='text-align:center;'>التفاصيل غير متاحة.</p>";
+        return;
+    }
+
+    const infoMap = {};
+    info.forEach(item => {
+        infoMap[item.Name] = item.Value;
+    });
+
+    const formattedDateTime = `${infoMap["تاريخ المباراة"] || 'غير متاح'} - ${infoMap["وقت المباراة"] || ''}`;
+
     panel.innerHTML = `
     <div class="info-container grid grid-cols-1 sm:grid-cols-2 gap-3 p-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-lg">
-  <div class="info-item flex">
-    <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">البطولة:</span>
-    <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${match['Cup-Name']}</span>
-  </div>
-  <div class="info-item flex">
-    <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">التاريخ:</span>
-    <span class="info-value text-gray-800 dark:text-gray-100 flex-1 text-left rtl:text-right" dir="ltr">${formattedDateTime}</span>
-  </div>
-  <div class="info-item flex">
-    <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">الحالة:</span>
-    <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${match['Match-Status']}</span>
-  </div>
-  <div class="info-item flex">
-    <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">الحكم:</span>
-    <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${info['Match-Referee'] || 'غير محدد'}</span>
-  </div>
-  <div class="info-item flex">
-    <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">الملعب:</span>
-    <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${info['Club-Name'] || 'غير محدد'}</span>
-  </div>
-  <div class="info-item flex">
-    <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">القناة:</span>
-    <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${info['Tv'] || 'غير متاح'}</span>
-  </div>
-</div>
-`;
-}
-
-function renderLineup(lineup, match) {
-    const panel = document.getElementById('tab-lineup');
-    if (!lineup) { panel.innerHTML = "<p style='text-align:center;'>التشكيلة غير متاحة.</p>"; return; }
-    const renderTeam = (teamData, teamInfo) => {
-        const starters = teamData.Team.filter(p => p.Status === 'Starting');
-        const substitutes = teamData.Team.filter(p => p.Status === 'Substitute');
-        return `  <div class="lineup-team space-y-4">
-    <div class="lineup-header flex items-center gap-3">
-      <img src="${teamInfo.Logo}" alt="${teamData['Team-Name']}" class="w-12 h-12 rounded-full border border-gray-300 dark:border-gray-600" />
-      <div>
-        <div class="text-lg font-bold text-gray-800 dark:text-gray-100">${teamData['Team-Name']}</div>
-        <div class="text-sm text-gray-500 dark:text-gray-400">${teamData.Formation}</div>
+      <div class="info-item flex">
+        <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">البطولة:</span>
+        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${match['Cup-Name']}</span>
+      </div>
+      <div class="info-item flex">
+        <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">التاريخ:</span>
+        <span class="info-value text-gray-800 dark:text-gray-100 flex-1 text-left rtl:text-right" dir="ltr">${formattedDateTime}</span>
+      </div>
+      <div class="info-item flex">
+        <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">الحالة:</span>
+        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${match['Match-Status']}</span>
+      </div>
+      <div class="info-item flex">
+        <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">الملعب:</span>
+        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${infoMap['ملعب المباراة'] || 'غير محدد'}</span>
+      </div>
+      <div class="info-item flex">
+        <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">القناة:</span>
+        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${infoMap['القناة الناقلة'] || 'غير متاح'}</span>
       </div>
     </div>
-    <div>
-      <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">التشكيلة الأساسية</div>
-      <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
-      ${starters.map(p => `
-        <li class="player-item flex items-center gap-2">
-          <img src="${p['Player-Logo']}" alt="${p['Player-Name']}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-          <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p['Player-Name']}</span>
-        </li>`).join('')}
-      </ul>
+    `;
+}
+
+
+function renderLineup(lineup, match) {
+  const panel = document.getElementById('tab-lineup');
+  if (!lineup || !match) {
+    panel.innerHTML = "<p style='text-align:center;'>التشكيلة غير متاحة.</p>";
+    return;
+  }
+
+  // 🧠 استخراج بيانات الفريقين من match
+  const homeTeam = match['Team-Right'];
+  const awayTeam = match['Team-Left'];
+
+  // 🧠 استخراج التشكيلة من JSON الجديد
+  const homePlayers = [...(lineup.Home_Lineup || []), ...(lineup.Home_Substitutes || [])];
+  const awayPlayers = [...(lineup.Away_Lineup || []), ...(lineup.Away_Substitutes || [])];
+
+  const homeCoach = lineup.Home_Coach?.title || 'غير معروف';
+  const awayCoach = lineup.Away_Coach?.title || 'غير معروف';
+
+  const renderTeam = (players, teamName, teamLogo, formation, coachName) => {
+    const starters = players.filter(p => p.type === "lineup");
+    const substitutes = players.filter(p => p.type === "substitutions");
+
+    return `
+    <div class="lineup-team space-y-4">
+      <div class="lineup-header flex items-center gap-3">
+        <img src="${teamLogo}" alt="${teamName}" class="w-12 h-12 rounded-full border border-gray-300 dark:border-gray-600" />
+        <div>
+          <div class="text-lg font-bold text-gray-800 dark:text-gray-100">${teamName}</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">${formation}</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">المدرب: ${coachName}</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">التشكيلة الأساسية</div>
+        <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
+          ${starters.map(p => `
+            <li class="player-item flex items-center gap-2">
+              <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
+              <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
+            </li>`).join('')}
+        </ul>
+      </div>
+
+      <div>
+        <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mt-4 mb-2">الاحتياطي</div>
+        <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
+          ${substitutes.map(p => `
+            <li class="player-item flex items-center gap-2">
+              <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
+              <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
+            </li>`).join('')}
+        </ul>
+      </div>
     </div>
-    <div>
-      <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mt-4 mb-2">الاحتياط</div>
-      <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
-      ${substitutes.map(p => `
-        <li class="player-item flex items-center gap-2">
-          <img src="${p['Player-Logo']}" alt="${p['Player-Name']}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-          <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p['Player-Name']}</span>
-        </li>
-`).join('')}      </ul>
+    `;
+  };
+
+  panel.innerHTML = `
+    <div class="lineup-container">
+      ${renderTeam(awayPlayers, awayTeam.Name, awayTeam.Logo, lineup.Away_Team_Formation, awayCoach)}
+      ${renderTeam(homePlayers, homeTeam.Name, homeTeam.Logo, lineup.Home_Team_Formation, homeCoach)}
     </div>
-  </div>
   `;
-    };
-    const currentMatch = allMatchesData.find(m => m['Match-id'] == matchDetailsView.dataset.matchId);
-    if (currentMatch) { panel.innerHTML = `<div class="lineup-container">${renderTeam(lineup['Away-Team'], currentMatch['Team-Left'])}${renderTeam(lineup['Home-Team'], currentMatch['Team-Right'])}</div>`; }
 }
 
-function renderEvents(events) {
-    const panel = document.getElementById('tab-events');
-    if (!events || events.length === 0) { panel.innerHTML = "<p style='text-align:center;'>لا توجد أحداث مسجلة.</p>"; return; }
-    panel.innerHTML = `<div class="events-container"><div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>${events.map(event => {
+
+function renderEvents(events, match) {
+  const panel = document.getElementById('tab-events');
+  if (!events || events.length === 0) {
+    panel.innerHTML = "<p style='text-align:center;'>لا توجد أحداث مسجلة.</p>";
+    return;
+  }
+
+  // لتحديد الفريق يمين أو يسار بناءً على match object
+  const teamLeft = match['Team-Left']?.Name || 'Team-1';
+  const teamRight = match['Team-Right']?.Name || 'Team-2';
+
+  panel.innerHTML = `
+    <div class="events-container">
+      <div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>
+      ${events.map(event => {
+        const isLeft = event.Team === 'Team-1'; // ممكن تعدله لو عندك فريقين باسماء صريحة
+        const playerName = event.Primary_Player?.Name || 'لاعب غير معروف';
+        const playerImage = event.Primary_Player?.Image || '';
+        const subPlayer = event.Secondary_Player?.Name || null;
+
         let extraPlayerHTML = '';
-        if (event['Event-Player'].Extra.length > 0) {
-            const prefix = event['Event-Name'] === 'هدف' ? 'صناعة: ' : '';
-            extraPlayerHTML = `<div class="event-assist">${prefix}${event['Event-Player'].Extra[0].Name}</div>`;
+        if (subPlayer) {
+          if (event.Event_Name === 'تبديل لاعب') {
+            extraPlayerHTML = `<div class="event-assist">خارج: ${subPlayer}</div>`;
+          } else {
+            extraPlayerHTML = `<div class="event-assist">${subPlayer}</div>`;
+          }
         }
-        return `<div class="event-item ${event.Place}"><div class="event-details"><img src="${event['Event-Logo']}" class="event-icon" alt=""><div><div class="player-name">${event['Event-Player'].Name}</div>${extraPlayerHTML}</div></div><div class="event-time bg-gray-200 dark:bg-gray-900">${event['Event-Time']}</div></div>`.replace(/^<div class="event-item right">/, '<div class="event-item right"><div style="width:45%"></div>').replace(/<\/div>$/, `${event.Place === 'left' ? '<div style="width:45%"></div>' : ''}</div>`);
-    }).join('')}</div>`;
+
+        const time = event.Time || event.Minute + `'` || '';
+
+        return `
+        <div class="event-item ${isLeft ? 'left' : 'right'}">
+          <div class="event-details">
+            <div class="event-icon-svg">${event.Event_Icon_SVG}</div>
+            <div class="event-text">
+              <div class="player-name">${playerName}</div>
+              ${extraPlayerHTML}
+            </div>
+          </div>
+          <div class="event-time bg-gray-200 dark:bg-gray-900">${time}</div>
+        </div>
+        `.replace(/^<div class="event-item right">/, '<div class="event-item right"><div style="width:45%"></div>')
+         .replace(/<\/div>$/, `${isLeft ? '<div style="width:45%"></div>' : ''}</div>`);
+      }).join('')}
+    </div>
+  `;
 }
 
-function renderStats(statsRight, statsLeft) {
-    const panel = document.getElementById('tab-stats');
-    if (!statsRight || !statsLeft) { panel.innerHTML = "<p style='text-align:center;'>لا توجد إحصائيات متاحة.</p>"; return; }
-    const combinedStats = statsRight.map((statRight, index) => ({ name: statRight.Name, valueRight: statRight.Value, valueLeft: (statsLeft[index] || { Value: '0' }).Value }));
-    const maxValues = {};
-    combinedStats.forEach(stat => {
-        const pRight = parseFloat(stat.valueRight) || 0;
-        const pLeft = parseFloat(stat.valueLeft) || 0;
-        maxValues[stat.name] = Math.max(pRight, pLeft, 1);
-    });
-    panel.innerHTML = `<div class="stats-container">${combinedStats.map(stat => {
-        const pRight = parseFloat(stat.valueRight) || 0;
-        const pLeft = parseFloat(stat.valueLeft) || 0;
-        const maxWidth = maxValues[stat.name];
-        const widthRight = (pRight / maxWidth) * 100;
-        const widthLeft = (pLeft / maxWidth) * 100;
-        return `<div class="stat-row">
-  <div class="stat-value">${stat.valueRight}</div>
-  <div class="stat-name">${stat.name}</div>
-  <div class="stat-value">${stat.valueLeft}</div>
-</div>`;
-    }).join('')}</div>`;
+
+function renderStats(stats) {
+  const panel = document.getElementById('tab-stats');
+  if (!stats || stats.length === 0) {
+    panel.innerHTML = "<p style='text-align:center;'>لا توجد إحصائيات متاحة.</p>";
+    return;
+  }
+
+  const combinedStats = stats.map(stat => ({
+    name: stat.Name,
+    valueLeft: parseStatValue(stat.Team1_Value),
+    valueRight: parseStatValue(stat.Team2_Value)
+  }));
+
+  // إزالة التكرارات بناءً على اسم الإحصائية
+  const uniqueStats = [];
+  const seenNames = new Set();
+  for (const stat of combinedStats) {
+    if (!seenNames.has(stat.name)) {
+      uniqueStats.push(stat);
+      seenNames.add(stat.name);
+    }
+  }
+
+  // حساب القيم القصوى علشان الأعمدة تكون متوازنة
+  const maxValues = {};
+  uniqueStats.forEach(stat => {
+    maxValues[stat.name] = Math.max(stat.valueLeft, stat.valueRight, 1);
+  });
+
+  panel.innerHTML = `
+    <div class="stats-container space-y-3">
+      ${uniqueStats.map(stat => {
+        const max = maxValues[stat.name];
+        const leftWidth = (stat.valueLeft / max) * 100;
+        const rightWidth = (stat.valueRight / max) * 100;
+
+        return `
+        <div class="stat-row flex flex-col gap-1">
+          <div class="stat-name text-center text-sm text-gray-700 dark:text-gray-300">${stat.name}</div>
+          <div class="stat-bar-wrapper flex items-center justify-between gap-2">
+            <div class="stat-side w-1/2 flex justify-start">
+              <div class="stat-bar bg-blue-600 dark:bg-blue-400 h-2 rounded-r-full" style="width: ${leftWidth}%"></div>
+            </div>
+            <div class="stat-values text-sm text-gray-800 dark:text-gray-100 w-10 text-center">
+              ${stat.valueLeft} - ${stat.valueRight}
+            </div>
+            <div class="stat-side w-1/2 flex justify-end">
+              <div class="stat-bar bg-red-600 dark:bg-red-400 h-2 rounded-l-full" style="width: ${rightWidth}%"></div>
+            </div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
 }
+
+function parseStatValue(value) {
+  if (typeof value === 'string') {
+    const percentMatch = value.match(/^(\d+(?:\.\d+)?)%$/);
+    if (percentMatch) return parseFloat(percentMatch[1]);
+    return parseFloat(value) || 0;
+  }
+  return value || 0;
+}
+
 
 // --- FETCH FUNCTIONS ---
 async function fetchMatches(dateString) {
@@ -494,62 +605,60 @@ async function fetchTransfers() {
     }
 }
 async function fetchEventsAndLineup(match) {
-    ['#tab-info', '#tab-lineup', '#tab-events'].forEach(s => {
-        document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
-    });
+  ['#tab-info', '#tab-lineup', '#tab-events'].forEach(s => {
+    document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
+  });
 
-    const apiUrl = `https://ko.best-goal.live/yallashoot.php?events?MatchID=${match['Match-id']}&time=${userTimeZone}`;
+  const apiUrl = `https://ko.best-goal.live/state.php?match_id=${match['Match-id']}&time=${userTimeZone}`;
 
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        const details = data['STING-WEB-Match-Details'];
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const details = data['STING-WEB-Match-Details'];
 
-        // تحقق من حالة المباراة ووقت البدء
-        const matchStatus = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
-    : match['Match-Status'] === 'انتهت' ? 'status-finished'
-      : match['Match-Status'] === 'بعد الوقت الإضافي' ? 'status-finished'
-        : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
-          : match['Match-Status'] === 'تأجلت' ? 'status-postponed'
-            : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
-              : 'status-live'; // مثال: "live" أو "not-started"
-        const startTime = new Date(match['Time-Start']); // وقت البداية من API
-        const now = new Date();
+    const matchStatus = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
+      : match['Match-Status'] === 'انتهت' ? 'status-finished'
+        : match['Match-Status'] === 'بعد الوقت الإضافي' ? 'status-finished'
+          : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
+            : match['Match-Status'] === 'تأجلت' ? 'status-postponed'
+              : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
+                : 'status-live';
 
-        // حساب الفرق بالثواني
-        const diffInSeconds = (startTime - now) / 1000;
+    const startTime = new Date(match['Time-Start']);
+    const now = new Date();
+    const diffInSeconds = (startTime - now) / 1000;
 
-        const shouldFetchStreams =
-            matchStatus === 'status-live' ||
-            (matchStatus === 'status-not-started' && diffInSeconds <= 1200 && diffInSeconds > 0);
+    const shouldFetchStreams =
+      matchStatus === 'status-live' ||
+      (matchStatus === 'status-not-started' && diffInSeconds <= 1200 && diffInSeconds > 0);
 
-        if (shouldFetchStreams) {
-            await fetchAndDisplayStreams(match);
-        }
-
-        renderInfo(details['Match-Info'], match);
-        renderLineup(details['Match-Lineup'], match);
-        renderEvents(details['Match-Events']);
-
-    } catch (e) {
-        console.error("Fetch Details Error:", e);
-        document.querySelector('#tab-info').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل التفاصيل</p>';
-        document.querySelector('#tab-lineup').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل التشكيلة</p>';
-        document.querySelector('#tab-events').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل الأحداث</p>';
+    if (shouldFetchStreams) {
+      await fetchAndDisplayStreams(match);
     }
+
+    renderInfo(details['Match-Info'], match);
+    renderLineup(details['Match-Lineup'], match);
+    renderEvents(details['Match-Events'], match);
+
+  } catch (e) {
+    console.error("Fetch Details Error:", e);
+    document.querySelector('#tab-info').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل التفاصيل</p>';
+    document.querySelector('#tab-lineup').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل التشكيلة</p>';
+    document.querySelector('#tab-events').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل الأحداث</p>';
+  }
 }
 
-async function fetchStats(matchId) {
-    document.querySelector('#tab-stats').innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
-    const apiUrl = `https://ko.best-goal.live/yallashoot.php?stats/?MatchID=${matchId}`;
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        renderStats(data['Statistics-1'], data['Statistics-2']);
-    } catch (e) {
-        console.error("Fetch Stats Error:", e);
-        document.querySelector('#tab-stats').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل الإحصائيات</p>';
-    }
+async function fetchStats(match) {
+  document.querySelector('#tab-stats').innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
+  const apiUrl = `https://ko.best-goal.live/state.php?match_id=${match['Match-id']}`;
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    renderStats(data['Statistics']);
+  } catch (e) {
+    console.error("Fetch Stats Error:", e);
+    document.querySelector('#tab-stats').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل الإحصائيات</p>';
+  }
 }
 
 async function fetchAndDisplayStreams(match) {
@@ -928,6 +1037,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
