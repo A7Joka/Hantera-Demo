@@ -25,7 +25,7 @@ async function loadMatches() {
       hmals.style.display = 'flex';
 const container = document.getElementById("home-matches-container");
   try {
-    const res = await fetch(`https://yanb8.bassamnetflix2.workers.dev/https://www.yanb8.com/api/matches/?date=today&time=${userTimeZone}`);
+    const res = await fetch(`https://ko.best-goal.live/yallashoot.php?date=2025-08-06&&time=${userTimeZone}`);
     const json = await res.json();
     const matches = json["STING-WEB-Matches"].slice(0, 5);
     alllMatchesData = matches;
@@ -208,8 +208,6 @@ tournaments.forEach((tournament, index) => {
 
 // ---------- الكروت ----------
 function createMatchCard(match) {
-  const API_DOMAIN = "https://www.yanb8.com";
-
   const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت';
   const statusClass = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
     : match['Match-Status'] === 'انتهت' ? 'status-finished'
@@ -228,7 +226,7 @@ function createMatchCard(match) {
   div.innerHTML = `
   <div class="match-body bg-gray-200 dark:bg-gray-900" data-match-id="${match['Match-id']}">
     <div class="match-part part-logo  bg-gray-100 dark:bg-gray-700">
-      <img src="${API_DOMAIN}${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
+      <img src="${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
     </div>
     <div class="match-part part-name text-gray-800 dark:text-gray-100">
       <span class="team-name">${match['Team-Left']['Name']}</span>
@@ -241,7 +239,7 @@ function createMatchCard(match) {
       <span class="team-name">${match['Team-Right']['Name']}</span>
     </div>
     <div class="match-part part-logo  bg-gray-100 dark:bg-gray-700">
-      <img src="${API_DOMAIN}${match['Team-Right']['Logo']}" alt="${match['Team-Right']['Name']}" class="match-logo" />
+      <img src="${match['Team-Right']['Logo']}" alt="${match['Team-Right']['Name']}" class="match-logo" />
     </div>
   </div>
   `;
