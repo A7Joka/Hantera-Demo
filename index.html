@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-adsense-account" content="ca-pub-7227871849765439">
+    <meta name="description" content="تابع كل ما يخص كرة القدم من مباريات اليوم، ملخصات، أخبار، فيديوهات، وانتقالات عبر Hantera TV. كل اللي يهمك في مكان واحد.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hantera.online/">
+    <meta property="og:title" content="Hantera TV - كل جديد في عالم الكرة">
+    <meta property="og:description" content="مباريات اليوم، ملخصات، أخبار، فيديوهات، وانتقالات لحظة بلحظة.">
+    <meta property="og:image" content="https://www.hantera.online/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.hantera.online/">
+    <meta name="twitter:title" content="Hantera TV - كل جديد في عالم الكرة">
+    <meta name="twitter:description" content="مباريات اليوم، ملخصات، أخبار، فيديوهات، وانتقالات لحظة بلحظة.">
+    <meta name="twitter:image" content="https://www.hantera.online/og-image.jpg">
+    <meta name="robots" content="index, follow" />
+    <title>Hantera TV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="canonical" href="https://www.hantera.online/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://yanb8.bassamnetflix2.workers.dev" crossorigin>
+    <link rel="preconnect" href="https://ko.best-goal.live">
+    <link rel="dns-prefetch" href="https://ko.best-goal.live">
+    <link rel="icon" href="favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#1eafb2',
+                        secondary: '#4B5563',
+                        light: '#FFFFFF',
+                        dark: '#111827',
+                    },
+                },
+            },
+        };   
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .dark body {
+            background-color: #111827;
+            color: #f9fafb;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
+    <header
+        class="shadow-md sticky top-0 z-50 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <nav class="container max-w-6xl mx-auto flex flex-wrap md:flex-nowrap items-center justify-between p-4">
+            <div class="text-2xl font-bold text-primary">Hantera TV</div>
+            <ul id="main-nav" class="nav flex gap-4 text-sm md:text-base font-semibold bg-gray-100 dark:bg-gray-800">
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100 active"
+                        data-view="home-view">الرئيسية</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
+                        data-view="matches-view">المباريات</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
+                        data-view="news-view">الأخبار</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
+                        data-view="tournaments-view">البطولات</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
+                        data-view="videos-view">الفيديوهات</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
+                        data-view="transfers-view">الإنتقالات</a></li>
+            </ul> <button id="theme-toggle"
+                class="fixed bottom-4 end-4 z-50 w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full shadow-lg transition hover:scale-105">
+                <span id="theme-icon" class="text-xl">🌙</span> </button> <button id="drawer-toggle"
+                class="drawer-toggle-btn" aria-label="Open navigation menu"> <span></span> <span></span> <span></span> </button>
+        </nav>
+    </header>
+    <main class="container max-w-6xl mx-auto px-4">
+        <div id="home-view" class="view active p-4 space-y-6">
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+                <h2 class="text-xl font-bold text-primary mb-4">أهم مباريات اليوم</h2>
+                <div id="home-matches-loading-spinner" class="flex justify-center py-4">
+                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
+                    </div>
+                </div>
+                <div id="home-matches-container" class="space-y-4"></div>
+            </section>
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+                <h2 class="text-xl font-bold text-primary mb-4">آخر الأخبار</h2>
+                <div id="home-news-loading-spinner" class="flex justify-center py-4">
+                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
+                    </div>
+                </div>
+                <div id="home-news-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
+            </section>
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 mb-10">
+                <h2 class="text-xl font-bold text-primary mb-4">البطولات</h2>
+                <div id="home-tournaments-loading-spinner" class="flex justify-center py-4">
+                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
+                    </div>
+                </div>
+                <div id="home-tournaments-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                </div>
+            </section>
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+                <h2 class="text-xl font-bold text-primary mb-4">أحدث الفيديوهات</h2>
+                <div id="home-videos-loading-spinner" class="flex justify-center py-4">
+                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
+                    </div>
+                </div>
+                <div id="home-videos-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
+            </section>
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+                <h2 class="text-xl font-bold text-primary mb-4">آخر الانتقالات</h2>
+                <div id="home-transfers-loading-spinner" class="flex justify-center py-4">
+                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
+                    </div>
+                </div>
+                <div id="home-transfers-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                </div>
+            </section>
+        </div>
+        <div id="matches-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+                <h2 class="text-lg font-bold text-primary">المباريات</h2>
+                <div
+                    class="matches-controls flex items-center justify-center gap-4 text-sm text-gray-700 dark:text-gray-100 rtl:flex-row-reverse">
+                    <button id="tomorrowBtn"
+                        style="border-radius: 6px;width: 30px;height: 30px;font-size: 18px;cursor: pointer;padding: 4px;display: flex;align-items: center;justify-content: center;"
+                        class="text-xl px-1 py-1 bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-200 rounded transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="5" height="8.75" viewBox="0 0 5 8.75">
+                            <path
+                                d="M3.491,4.375.183,7.683a.625.625,0,0,0,.884.884l3.75-3.75a.625.625,0,0,0,0-.884L1.067.183a.625.625,0,0,0-.884.884Z"
+                                transform="rotate(180 2.5 4.375)" fill="#9ca39d" />
+                        </svg>
+                    </button>
+                    <button id="displayDate" class="py-1 rounded transition cursor-pointer flex font-medium">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20">
+                            <path
+                                d="M2.7,20A2.716,2.716,0,0,1,0,17.273V4.546A2.717,2.717,0,0,1,2.7,1.818H4.5V.909a.9.9,0,1,1,1.8,0v.909h5.4V.909a.9.9,0,1,1,1.8,0v.909h1.8A2.717,2.717,0,0,1,18,4.546V17.273A2.716,2.716,0,0,1,15.3,20Zm-.9-2.727a.905.905,0,0,0,.9.909H15.3a.905.905,0,0,0,.9-.909V9.091H1.8Zm14.4-10V4.546a.906.906,0,0,0-.9-.91H13.5v.91a.9.9,0,1,1-1.8,0v-.91H6.3v.91a.9.9,0,1,1-1.8,0v-.91H2.7a.906.906,0,0,0-.9.91V7.273Z"
+                                fill="#9ca39d"></path>
+                        </svg>
+                        <span id="formattedDate" class="pr-1"></span>
+                    </button>
+                    <button id="yesterdayBtn"
+                        style="border-radius: 6px;width: 30px;height: 30px;font-size: 18px;cursor: pointer;padding: 4px;display: flex;align-items: center;justify-content: center;"
+                        class="text-xl px-1 py-1 bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-200 rounded transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="5" height="8.75" viewBox="0 0 5 8.75">
+                            <path
+                                d="M3.491,4.375.183,7.683a.625.625,0,0,0,.884.884l3.75-3.75a.625.625,0,0,0,0-.884L1.067.183a.625.625,0,0,0-.884.884Z"
+                                fill="#9ca39d" />
+                        </svg>
+                    </button>
+                    <button id="todayBtn" class="hidden">اليوم</button>
+                    <input type="date" id="datePicker"
+                        style="position:absolute; opacity:0; width:1px; height:1px; pointer-events:none;">
+                </div>
+            </div>
+            <div id="matches-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="matches-container"></div>
+        </div>
+        <div id="news-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h1 class="text-lg font-bold text-primary mb-4">أحدث الأخبار</h1>
+            <div id="news-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="news-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
+            <div id="news-load-more-container" class="load-more-container mt-4 text-center"></div>
+        </div>
+        <div id="tournaments-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h1 class="text-lg font-bold text-primary mb-4">البطولات</h1>
+            <div id="tournaments-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="tournaments-grid-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                <div id="tournaments-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+            </div>
+            <div id="standings-display-container" class="mt-4" style="display: none;"></div>
+        </div>
+        <div id="videos-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h1 class="text-lg font-bold text-primary mb-4">أحدث الفيديوهات</h1>
+            <div id="videos-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="videos-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
+            <div id="videos-load-more-container" class="load-more-container mt-4 text-center"></div>
+        </div>
+        <div id="transfers-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h1 class="text-lg font-bold text-primary mb-4">آخر الانتقالات</h1>
+            <div id="transfers-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="transfers-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
+        </div>
+        <div id="policy-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h2
+                class="text-xl font-bold text-primary mb-4 text-center items-center justify-between mb-6 border-b border-gray-300 dark:border-gray-700 pb-4">
+                Privacy Policy - سياسة الخصوصية</h2>
+            <nav class="languages-tabs flex mb-6 border-b border-gray-200 dark:border-gray-700"
+                id="languages-tabs-container">
+                <button class="tab-btn text-gray-800 dark:text-gray-100 active" data-tab="en">English</button>
+                <button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="ar">العربية</button>
+            </nav>
+            <div class="tabs-content" id="tabs-container">
+                <div id="tab-en" class="tabs-panel" dir="ltr">
+                    <h3 class="text-2xl font-extrabold text-gray-800 dark:text-white mb-2">Privacy Policy for Hantera TV
+                    </h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">Effective Date: <strong>August 04,
+                            2025</strong></p>
+                    <div class="space-y-10 text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                        <div class="space-y-4">
+                            <p>
+                                Hantera TV ("we", "our", or "us") is developed and maintained by a group of Arab
+                                developers. This Privacy Policy explains how we handle data and your privacy when you
+                                use our website and Android application (collectively, the "Service").
+                            </p>
+                            <p>
+                                We respect your privacy. We collect minimal data and are transparent about how it's
+                                used.
+                            </p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">1. Who We Are</h4>
+                            <p>Hantera TV is a football-focused platform offering:</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>Match schedules, details, lineups, statistics, and events</li>
+                                <li>Occasionally embedded third-party live streams (see Section 5)</li>
+                                <li>Football-related news and tournament coverage</li>
+                                <li>Standings, top scorers, and transfer updates</li>
+                                <li>Related football videos</li>
+                            </ul>
+                            <p>
+                                Hantera TV is not a registered legal entity. It is managed by independent Arab
+                                developers under this collective name.
+                            </p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">2. Personal Data Collection</h4>
+                            <p>We do not collect personal data. No names, emails, phone numbers, or logins are stored.
+                            </p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">3. Cookies and Analytics</h4>
+                            <p>We use cookies and IP-based session data to:</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>Secure access to third-party services like Firebase</li>
+                                <li>Cache content for better performance</li>
+                                <li>Analyze non-personal, aggregated usage data</li>
+                            </ul>
+                            <p>Cookies are optional and can be managed via browser settings.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">4. Advertisements</h4>
+                            <p>We may use Google AdSense to show ads. These ads:</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>Appear in clearly marked boxes</li>
+                                <li>Do not use personal tracking</li>
+                                <li>Are displayed with full transparency</li>
+                            </ul>
+                            <div
+                                class="border-l-4 border-yellow-400 bg-yellow-50 dark:bg-yellow-900/40 p-4 rounded text-yellow-800 dark:text-yellow-100 text-sm">
+                                <i class="fas fa-exclamation-triangle mt-1 text-yellow-600 dark:text-yellow-300"></i>
+                                <strong>Disclaimer:</strong><br />
+                                This content is <u>not</u> created or hosted by Hantera TV.<br />
+                                All legal responsibility lies with the third party.
+                            </div>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">5. Third-Party Content (Live Streams)</h4>
+                            <p>We may embed public live streams. These:</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>Are not owned or hosted by Hantera TV</li>
+                                <li>Are included only if publicly available</li>
+                                <li>Include clear disclaimers</li>
+                            </ul>
+                            <div
+                                class="border-l-4 border-yellow-400 bg-yellow-50 dark:bg-yellow-900/40 p-4 rounded text-yellow-800 dark:text-yellow-100 text-sm">
+                                <i class="fas fa-exclamation-triangle mt-1 text-yellow-600 dark:text-yellow-300"></i>
+                                <strong>Disclaimer:</strong><br />
+                                Hantera TV assumes <u>no</u> legal responsibility for this content.<br />
+                                All legal rights and liabilities rest with the third-party provider.
+                            </div>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">6. Push Notifications</h4>
+                            <p>Match notifications are:</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>Optional and opt-in only</li>
+                                <li>Can be disabled anytime from device settings</li>
+                            </ul>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">7. Data Retention</h4>
+                            <p>We store no personal data. Some API data is cached temporarily to improve performance.
+                            </p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">8. Children’s Privacy</h4>
+                            <p>Hantera TV is suitable for all ages. No data is collected. No explicit content is shown.
+                            </p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">9. International Users</h4>
+                            <p>Hantera TV is accessible worldwide. Basic session data (e.g., IP) may be processed for
+                                analytics and security.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">10. Data Sharing</h4>
+                            <p>We do not share data or engage in marketing, affiliate programs, or retargeting.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">11. Changes</h4>
+                            <p>We may update this policy. Changes will appear here with the new effective date.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">12. Contact Us</h4>
+                            <p>For questions or concerns, email us at: 📧 <strong>HanteraTV@gmail.com</strong></p>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-ar" class="tabs-panel hidden" dir="rtl">
+                    <h3 class="text-2xl font-extrabold text-gray-800 dark:text-white mb-2">سياسة الخصوصية لمنصة Hantera
+                        TV</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">تاريخ السريان: <strong>04 أغسطس
+                            2025</strong></p>
+                    <div class="space-y-10 text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                        <div class="space-y-4">
+                            <p>تم تطوير Hantera TV وصيانتها بواسطة مجموعة من المطورين العرب. توضح هذه السياسة كيف نتعامل
+                                مع البيانات وخصوصيتك عند استخدام الموقع والتطبيق.</p>
+                            <p>نحترم خصوصيتك. لا نقوم بجمع بيانات شخصية ونوضح بكل شفافية ما نقوم به.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">١. من نحن</h4>
+                            <p>Hantera TV منصة تركز على كرة القدم وتوفر:</p>
+                            <ul class="list-disc pr-6 space-y-1">
+                                <li>جداول المباريات، التفاصيل، التشكيلات، الإحصائيات، والأحداث</li>
+                                <li>أحيانًا تضمين بثوث مباشرة من أطراف خارجية (انظر القسم ٥)</li>
+                                <li>أخبار متعلقة بكرة القدم وتغطية البطولات</li>
+                                <li>الترتيب، الهدافين، وأخبار الانتقالات</li>
+                                <li>مقاطع فيديو مرتبطة بكرة القدم</li>
+                            </ul>
+                            <p>Hantera TV ليست كيانًا قانونيًا. تتم إدارتها بواسطة مجموعة مطورين عرب مستقلين تحت هذا
+                                الاسم.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">٢. جمع البيانات الشخصية</h4>
+                            <p>لا نقوم بجمع أي بيانات شخصية. لا نقوم بتخزين أسماء أو رسائل بريد إلكتروني أو أرقام هواتف
+                                أو تسجيلات دخول.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">٣. ملفات تعريف الارتباط والتحليلات</h4>
+                            <p>نستخدم ملفات تعريف الارتباط وبيانات الجلسة المستندة إلى IP من أجل:</p>
+                            <ul class="list-disc pr-6 space-y-1">
+                                <li>تأمين الوصول إلى خدمات خارجية مثل Firebase</li>
+                                <li>تخزين مؤقت للمحتوى لتحسين الأداء</li>
+                                <li>تحليل بيانات استخدام مجمعة غير شخصية</li>
+                            </ul>
+                            <p>ملفات تعريف الارتباط اختيارية ويمكنك إدارتها من إعدادات المتصفح.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">٤. الإعلانات</h4>
+                            <p>قد نعرض إعلانات من خلال Google AdSense. هذه الإعلانات:</p>
+                            <ul class="list-disc pr-6 space-y-1">
+                                <li>تظهر داخل صناديق واضحة</li>
+                                <li>لا تستخدم التتبع الشخصي</li>
+                                <li>تُعرض بشفافية تامة</li>
+                            </ul>
+                            <div
+                                class="border-r-4 border-yellow-400 bg-yellow-50 dark:bg-yellow-900/40 p-4 rounded text-yellow-800 dark:text-yellow-100 text-sm">
+                                <i class="fas fa-exclamation-triangle mt-1 text-yellow-600 dark:text-yellow-300"></i>
+                                <strong>تنويه:</strong><br />
+                                هذا المحتوى <u>لا</u> يتم إنشاؤه أو استضافته من قبل Hantera TV.<br />
+                                تقع المسؤولية القانونية الكاملة على الطرف الثالث.
+                            </div>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">٥. المحتوى من أطراف خارجية (البث المباشر)</h4>
+                            <p>قد نقوم بتضمين بثوث مباشرة متاحة علنًا. هذه:</p>
+                            <ul class="list-disc pr-6 space-y-1">
+                                <li>لا يملكها أو يستضيفها Hantera TV</li>
+                                <li>يتم تضمينها فقط إذا كانت عامة</li>
+                                <li>تشمل تنويهات واضحة</li>
+                            </ul>
+                            <div
+                                class="border-r-4 border-yellow-400 bg-yellow-50 dark:bg-yellow-900/40 p-4 rounded text-yellow-800 dark:text-yellow-100 text-sm">
+                                <i class="fas fa-exclamation-triangle mt-1 text-yellow-600 dark:text-yellow-300"></i>
+                                <strong>تنويه:</strong><br />
+                                Hantera TV لا يتحمل <u>أي</u> مسؤولية قانونية عن هذا المحتوى.<br />
+                                جميع الحقوق والمسؤوليات تقع على مزود الخدمة الطرف الثالث.
+                            </div>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">٦. الإشعارات</h4>
+                            <p>إشعارات المباريات:</p>
+                            <ul class="list-disc pr-6 space-y-1">
+                                <li>اختيارية تمامًا وبناءً على موافقة المستخدم</li>
+                                <li>يمكن تعطيلها في أي وقت من إعدادات الجهاز</li>
+                            </ul>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">٧. الاحتفاظ بالبيانات</h4>
+                            <p>لا يتم تخزين بيانات شخصية. قد يتم تخزين بعض البيانات مؤقتًا لتحسين الأداء.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">٨. خصوصية الأطفال</h4>
+                            <p>Hantera TV مناسب لجميع الأعمار. لا يتم جمع بيانات. لا يتم عرض محتوى غير مناسب.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">٩. المستخدمون الدوليون</h4>
+                            <p>المنصة متاحة عالميًا. قد تتم معالجة بيانات الجلسة مثل IP لتحليلات الأمان.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">١٠. مشاركة البيانات</h4>
+                            <p>لا نقوم بمشاركة البيانات. لا نشارك في برامج تسويق أو تتبع أو إعادة استهداف.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">١١. التغييرات</h4>
+                            <p>قد نقوم بتحديث هذه السياسة. سيتم نشر التحديثات هنا مع التاريخ الجديد.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">١٢. اتصل بنا</h4>
+                            <p>للاستفسارات أو الملاحظات، تواصل معنا عبر البريد الإلكتروني: 📧
+                                <strong>HanteraTV@gmail.com</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="justify-center text-center m-4"><a href="#" data-view="home-view"
+                        class="text-primary dark:text-teal-300 font-medium hover:underline text-sm md:text-base">العودة
+                        للرئيسية</a></div>
+            </div>
+        </div>
+        <div id="about-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h2
+                class="text-xl font-bold text-primary mb-6 text-center border-b border-gray-300 dark:border-gray-700 pb-4">
+                About Us - من نحن
+            </h2>
+            <nav class="about-tabs flex mb-6 border-b border-gray-200 dark:border-gray-700" id="about-container">
+                <button class="tab-btn text-gray-800 dark:text-gray-100 active" data-tabs="en">English</button>
+                <button class="tab-btn text-gray-800 dark:text-gray-100" data-tabs="ar">العربية</button>
+            </nav>
+            <div class="tabs-content" id="about-container">
+                <!-- English Tab -->
+                <div id="tabs-en" class="tabss-panel" dir="ltr">
+                    <h3 class="text-2xl font-extrabold text-gray-800 dark:text-white mb-2">About Us</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">Welcome to <strong>Hantera
+                            TV</strong><br>We are a team of Arab
+                        developers passionate about football. Hantera TV offers fast, simple, and useful football
+                        content.</p>
+                    <div class="space-y-10 text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">Our Vision</h4>
+                            <p>We aim to become a trusted football source across the Arab world. We focus on accuracy,
+                                clarity, and speed.</p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">Our Values</h4>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li><strong>Transparency:</strong> No tracking, no personal data collection.</li>
+                                <li><strong>Care:</strong> Smooth experience without ads or distractions.</li>
+                                <li><strong>Honesty:</strong> No exaggeration, just reliable football info.</li>
+                            </ul>
+                            </ul>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">What We Offer</h4>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>Local-time match schedules</li>
+                                <li>Lineups, stats, and live events</li>
+                                <li>Football videos and summaries</li>
+                                <li>League standings and top scorers</li>
+                                <li>Transfer news and updates</li>
+                            </ul>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <p>We are not an official institution. We simply love football and want to share it with
+                                you.</p>
+                            <p>Thanks for using <strong>Hantera TV</strong></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Arabic Tab -->
+                <div id="tabs-ar" class="tabss-panel hidden" dir="rtl">
+                    <h3 class="text-2xl font-extrabold text-gray-800 dark:text-white mb-2">من نحن</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">مرحبًا بك في <strong>Hantera
+                            TV</strong><br>نحن مجموعة عربية
+                        مطوّرين نحب كرة
+                        القدم. منصة خفيفة وسريعة وتركّز على محتوى مفيد لعشاق الكرة.</p>
+                    <div class="space-y-10 text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">رؤيتنا</h4>
+                            <p>نسعى لأن نكون مرجعًا موثوقًا في العالم العربي. نركّز على الدقة، الوضوح، وسرعة التصيير.
+                            </p>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">قيمنا</h4>
+                            <ul class="list-disc pr-6 space-y-1">
+                                <li><strong>الشفافية:</strong> لا تتبع، لا جمع بيانات شخصية.</li>
+                                <li><strong>الاهتمام:</strong> تجربة سلسة بدون إعلانات تزعج.</li>
+                                <li><strong>الصدق:</strong> لا مبالغة، فقط معلومات رياضية موثوقة.</li>
+                            </ul>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <h4 class="text-xl font-bold">ماذا نقدم؟</h4>
+                            <ul class="list-disc pr-6 space-y-1">
+                                <li>مواعيد المباريات حسب التوقيت المحلي</li>
+                                <li>التشكيلات، الإحصائيات، الأحداث المباشرة</li>
+                                <li>فيديوهات رياضية وملخصات</li>
+                                <li>الترتيب العام والهدافين</li>
+                                <li>أخبار الانتقالات وتحديثات كرة القدم</li>
+                            </ul>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-600" />
+                        <div class="space-y-4">
+                            <p>نحن لسنا جهة رسمية. نحن عشاق لكرة القدم نرغب في مشاركتها معك.</p>
+                            <p>شكرًا لاستخدامك <strong>Hantera TV</strong></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-6">
+                    <a href="#" data-view="home-view"
+                        class="text-primary dark:text-teal-300 font-medium hover:underline text-sm">العودة للرئيسية</a>
+                </div>
+            </div>
+        </div>
+        <div id="match-details-view"
+            class="view bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300">
+            <div
+                class="details-page-header flex items-center justify-between mb-6 border-b border-gray-300 dark:border-gray-700 pb-4">
+                <h3 class="details-page-title text-xl font-bold text-gray-800 dark:text-gray-100">تفاصيل المباراة</h3>
+                <div class="flex items-center">
+                    <div id="details-tabs-menu-container" class="relative">
+                        <div class="grid"><button id="details-tabs-drawer-btn"
+                                class="flex items-center gap-2 text-sm text-primary dark:text-teal-300 hover:text-primary-dark">
+                                <svg viewBox="0 0 100 80" width="20" height="20"
+                                    class="fill-current text-gray-800 dark:text-gray-100">
+                                    <rect width="100" height="15" rx="8"></rect>
+                                    <rect y="30" width="100" height="15" rx="8"></rect>
+                                    <rect y="60" width="100" height="15" rx="8"></rect>
+                                </svg> <span id="active-tab-title"
+                                    class="text-gray-800 dark:text-gray-100">التفاصيل</span>
+                            </button>
+                        </div>
+                        <div id="details-tabs-menu"
+                            class="tabs-drawer absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-10 hidden">
+                        </div>
+                    </div>
+                    <button
+                        class="back-btn absolute left-0 text-primary dark:text-teal-300 font-medium hover:underline text-sm md:text-base"
+                        id="backToMatchesBtn">العودة</button>
+                </div>
+            </div>
+            <div class="modal-match-card mb-6 bg-white dark:bg-gray-800" id="modalMatchCard"></div>
+            <nav class="details-tabs mb-6 border-b border-gray-200 dark:border-gray-700" id="details-tabs-container">
+            </nav>
+            <div class="tab-content" id="tab-content-container"></div>
+        </div>
+        <div id="news-article-view"
+            class="view bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300">
+            <div
+                class="details-page-header flex items-center justify-between mb-6 border-b border-gray-300 dark:border-gray-700 pb-4">
+                <h3 class="text-xl font-bold">تفاصيل الخبر</h3> <button
+                    class="back-btn text-primary dark:text-teal-300 font-medium hover:underline text-sm md:text-base"
+                    id="backToNewsBtn">العودة ←</button>
+            </div>
+            <div id="news-article-content" class="article-content-wrapper"></div>
+        </div>
+    </main>
+    <div class="modal-overlay" id="videoPlayerModal">
+        <div class="modal-content video-modal-content">
+            <button class="modal-close-btn">X إغلاق</button>
+            <div class="video-iframe-container modal-content"> <iframe id="videoPlayerIframe" src="about:blank" frameborder="0"
+                    allow="autoplay; encrypted-media" allowfullscreen></iframe> </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="adminModal">
+        <div class="modal-content bg-gray-100 dark:bg-gray-900">
+            <header class="modal-header">
+                <h3>إدارة سيرفرات البث</h3> <button class="modal-close-btn">&times;</button>
+            </header>
+            <div class="admin-panel">
+                <div id="admin-password-section">
+                    <p class="mb-2">الرجاء إدخال كلمة المرور</p> <input type="password" id="admin-password-input"
+                        class="bg-white dark:bg-gray-800 border" placeholder="كلمة المرور"> <button
+                        id="admin-login-btn">دخول</button>
+                </div>
+                <div id="admin-content-section" style="display: none;">
+                    <h4 id="form-title" class="mb-2">إضافة سيرفر جديد</h4>
+                    <form id="add-stream-form"> <input type="hidden" id="stream-id"> <input type="text" id="stream-name"
+                            class="bg-white dark:bg-gray-800 border" placeholder="اسم القناة (مثال: القناة 1)" required>
+                        <select id="stream-type" class="bg-white dark:bg-gray-800 border" required>
+                            <option value="hls">HLS (m3u8)</option>
+                            <option value="dash">DASH (mpd)</option>
+                            <option value="dash-drm">DASH + DRM</option>
+                        </select> <input type="url" id="stream-url" class="bg-white dark:bg-gray-800 border"
+                            placeholder="رابط البث" required>
+                        <div id="drm-fields" style="display: none; flex-direction: column; gap: 10px;"> <input
+                                type="text" id="stream-key-id" class="bg-white dark:bg-gray-800 border" placeholder="Key ID"> <input type="text" id="stream-key"
+                                class="bg-white dark:bg-gray-800 border" placeholder="Key"> </div>
+                        <div class="form-buttons"> <button type="submit" id="save-stream-btn">حفظ السيرفر</button>
+                            <button type="button" id="cancel-edit-btn" style="display: none;">إلغاء التعديل</button>
+                        </div>
+                    </form>
+                    <hr>
+                    <h4>السيرفرات الحالية</h4>
+                    <div id="current-streams-list">لا توجد سيرفرات حاليًا.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 mt-16 border-t dark:border-gray-700">
+        <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <img src="img/logo.svg" alt="Hantera TV" class="h-8 mb-4">
+                <p class="text-sm leading-relaxed">
+                    Hantera TV هو موقع يقدم تغطية شاملة لأهم المباريات، الأخبار، الفيديوهات والبطولات الرياضية.
+                </p>
+                <div class="flex gap-3 mt-4">
+                    <a href="#" class="block"
+                        style="text-decoration: none; padding: 8px 12px; font-weight: 600;font-size: 0.95rem; border-radius: 8px; transition: all 0.3s ease; background: #95959550;">
+                        <img src="img/google-play.svg" class="h-8 dark:flex hidden" alt="Google Play">
+                        <img src="img/google-play-dark.svg" class="h-8 dark:hidden" alt="Google Play">
+                    </a>
+                    <a href="#" class="block"
+                        style="text-decoration: none; padding: 8px 12px; font-weight: 600;font-size: 0.95rem; border-radius: 8px; transition: all 0.3s ease; background: #95959550;">
+                        <img src="img/app-store.svg" class="h-8 dark:flex hidden" alt="App Store">
+                        <img src="img/app-store-dark.svg" class="h-8 dark:hidden" alt="App Store">
+                    </a>
+                </div>
+            </div>
+            <div class="grid grid-cols-2">
+                <div>
+                    <h3 class="font-bold text-primary mb-3">أقسام</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" data-view="home-view" class="hover:text-primary transition">الرئيسية</a></li>
+                        <li><a href="#" data-view="matches-view" class="hover:text-primary transition">المباريات</a>
+                        </li>
+                        <li><a href="#" data-view="news-view" class="hover:text-primary transition">الأخبار</a></li>
+                        <li><a href="#" data-view="videos-view" class="hover:text-primary transition">فيديوهات</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-primary mb-3">روابط</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" data-view="policy-view" class="hover:text-primary transition">سياسة الخصوصية</a>
+                        </li>
+                        <li><a href="#" data-view="about-view" class="hover:text-primary">من نحن</a></li>
+                        <li><a href="mailto:HanteraTV@gmail.com" class="hover:text-primary">اتصل بنا</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="border-t dark:border-gray-700 py-4 max-w-6xl mx-auto">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-6 gap-4">
+                <p class="text-xs text-gray-500 dark:text-gray-400">© 2025 Hantera TV. جميع الحقوق محفوظة.</p>
+                <div class="flex gap-4">
+                    <a href="#" aria-label="فيسبوك" class="hover:text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+                            <path id="facebook_fb_face_book" data-name="facebook fb face book"
+                                d="M24,3H8A5,5,0,0,0,3,8V24a5,5,0,0,0,5,5h8a1,1,0,0,0,1-1V20a1,1,0,0,0-1-1H15V17h1a1,1,0,0,0,1-1V12.5A2.5,2.5,0,0,1,19.5,10H22v2H21a2,2,0,0,0-2,2v2a1,1,0,0,0,1,1h1.72l-.5,2H20a1,1,0,0,0-1,1v4a1,1,0,0,0,2,0V21h1a1,1,0,0,0,1-.76l1-4A.993.993,0,0,0,23,15H21V14h2a1,1,0,0,0,1-1V9a1,1,0,0,0-1-1H19.5A4.51,4.51,0,0,0,15,12.5V15H14a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1h1v6H8a3,3,0,0,1-3-3V8A3,3,0,0,1,8,5H24a3,3,0,0,1,3,3V24a3,3,0,0,1-3,3H20a1,1,0,0,0,0,2h4a5,5,0,0,0,5-5V8A5,5,0,0,0,24,3Z"
+                                transform="translate(-3 -3)" fill="#1eafb2"></path>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="انستجرام" class="hover:text-primary">
+                        <svg id="Component_130_1" data-name="Component 130 – 1" xmlns="http://www.w3.org/2000/svg"
+                            width="24.555" height="24.663" viewBox="0 0 24.555 24.663">
+                            <path id="Path_14748" data-name="Path 14748"
+                                d="M20.45,13.32a1,1,0,0,0-.57,1.3,4,4,0,1,1-2.31-2.3,1,1,0,0,0,.71-1.87,5.99,5.99,0,1,0,3.47,3.44,1,1,0,0,0-1.3-.57Z"
+                                transform="translate(-3.73 -3.677)" fill="#1eafb2"></path>
+                            <circle id="Ellipse_253" data-name="Ellipse 253" cx="1" cy="1" r="1"
+                                transform="translate(18.27 4.323)" fill="#1eafb2"></circle>
+                            <path id="Path_14749" data-name="Path 14749"
+                                d="M28,9a5,5,0,0,0-4.9-5h0A77.111,77.111,0,0,0,9,4,5,5,0,0,0,4,8.921,91.91,91.91,0,0,0,4,23a5,5,0,0,0,4.9,5h0c2.36.22,4.73.34,7.1.34s4.71-.11,7.05-.34A5,5,0,0,0,28,23.08,87.089,87.089,0,0,0,28,9ZM26,23a3,3,0,0,1-3,3h-.1A71.73,71.73,0,0,1,9,26a3,3,0,0,1-3-3.08A92.4,92.4,0,0,1,6,9,3,3,0,0,1,9.09,6q3.44-.31,6.9-.32T23,6a3,3,0,0,1,3,3.08A85.13,85.13,0,0,1,26,23Z"
+                                transform="translate(-3.73 -3.677)" fill="#1eafb2"></path>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="اكس" class="hover:text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision"
+                            text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd"
+                            clip-rule="evenodd" viewBox="0 0 512 462.799" width="24" height="24">
+                            <path
+                                d="M403.229 0h78.506L310.219 196.04 512 462.799H354.002L230.261 301.007 88.669 462.799h-78.56l183.455-209.683L0 0h161.999l111.856 147.88L403.229 0zm-27.556 415.805h43.505L138.363 44.527h-46.68l283.99 371.278z"
+                                fill="#1eafb2"></path>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="يوتيوب" class="hover:text-primary">
+                        <svg id="Component_131_1" data-name="Component 131 – 1" xmlns="http://www.w3.org/2000/svg"
+                            width="28.525" height="20.218" viewBox="0 0 28.525 20.218">
+                            <path id="Path_14750" data-name="Path 14750"
+                                d="M30,12a5.71,5.71,0,0,0-5.31-5.7A173.323,173.323,0,0,0,7.33,6.28,5.727,5.727,0,0,0,2,12a43.69,43.69,0,0,0,0,8.72,5.32,5.32,0,0,0,5.28,5.33h0q4.35.24,8.72.24t8.67-.23A5.34,5.34,0,0,0,30,20.8,31.67,31.67,0,0,0,30,12Zm-2,8.63a.49.49,0,0,0,0,.12,3.36,3.36,0,0,1-3.39,3.34,166,166,0,0,1-17.28,0A3.36,3.36,0,0,1,4,20.65a42,42,0,0,1,0-8.47.45.45,0,0,0,0-.11A3.78,3.78,0,0,1,7.38,8.28c2.86-.13,5.74-.19,8.62-.19s5.76.06,8.62.19h.05c1.71,0,3.33,1.84,3.33,3.79a.76.76,0,0,0,0,.15,30.11,30.11,0,0,1,0,8.39Z"
+                                transform="translate(-1.782 -6.072)" fill="#1eafb2"></path>
+                            <path id="Path_14751" data-name="Path 14751"
+                                d="M20.79,15.51l-7.14-3.68a1,1,0,1,0-.92,1.78l5.43,2.79-4,2.07V16.4a1,1,0,0,0-2,0v3.72a1,1,0,0,0,1.46.89l7.14-3.72a1.017,1.017,0,0,0,.03-1.78Z"
+                                transform="translate(-1.782 -6.072)" fill="#1eafb2"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/home.js"></script>
+    <script>
+        const toggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        toggleBtn.addEventListener('click', () => {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.textContent = '🌞';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.textContent = '🌙';
+            }
+        });
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                themeIcon.textContent = '🌞';
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeIcon.textContent = '🌙';
+            }
+        });
+        const datePicker = document.getElementById('datePicker');
+        const formattedDate = document.getElementById('formattedDate');
+        const displayDate = document.getElementById('displayDate');
+        const arabicMonths = [
+            "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+            "يوليو", "اغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+        ];
+        let selectedDate = new Date();
+        function updateDisplayedDate() {
+            const day = selectedDate.getDate();
+            const month = arabicMonths[selectedDate.getMonth()];
+            const year = selectedDate.getFullYear();
+            formattedDate.textContent = `${day} ${month} ${year}`;
+            datePicker.value = selectedDate.toISOString().split('T')[0];
+        }
+        document.getElementById('yesterdayBtn').addEventListener('click', () => {
+            selectedDate.setDate(selectedDate.getDate() - 1);
+            updateDisplayedDate();
+        });
+        document.getElementById('tomorrowBtn').addEventListener('click', () => {
+            selectedDate.setDate(selectedDate.getDate() + 1);
+            updateDisplayedDate();
+        });
+        displayDate.addEventListener('click', () => {
+            const picker = document.getElementById("datePicker");
+            picker.showPicker();
+        });
+        datePicker.addEventListener('change', () => {
+            if (datePicker.value) {
+                selectedDate = new Date(datePicker.value);
+                updateDisplayedDate();
+            }
+        });
+        updateDisplayedDate();
+        document.querySelectorAll('#languages-tabs-container .tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#languages-tabs-container .tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('#tabs-container .tabs-panel').forEach(panel => panel.classList.add('hidden'));
+                const tabId = btn.getAttribute('data-tab');
+                document.querySelector(`#tab-${tabId}`).classList.remove('hidden');
+            });
+        });
+        document.querySelectorAll('#about-container .tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#about-container .tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('#about-container .tabss-panel').forEach(panel => panel.classList.add('hidden'));
+                const tabId = btn.getAttribute('data-tabs');
+                document.querySelector(`#tabs-${tabId}`).classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
