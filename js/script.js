@@ -605,6 +605,7 @@ async function fetchTransfers() {
     }
 }
 async function fetchEventsAndLineup(match) {
+  const matchId = match['Match-id'];
   ['#tab-info', '#tab-lineup', '#tab-events'].forEach(s => {
     document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
   });
@@ -1037,6 +1038,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
