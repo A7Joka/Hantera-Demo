@@ -360,7 +360,7 @@ async function fetchMatches(dateString) {
     matchesLoadingSpinner.style.display = 'flex';
     matchesContainer.innerHTML = '';
     datePicker.value = dateString;
-    const apiUrl = `https://www.ysscores.com/ar/match_date_to?date=${dateString}&time=${userTimeZone}`;
+    const apiUrl = `https://ko.best-goal.live/yallashoot.php?date=${dateString}&time=${userTimeZone}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error('API Error');
@@ -498,7 +498,7 @@ async function fetchEventsAndLineup(match) {
         document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
     });
 
-    const apiUrl = `https://www.ysscores.com/ar/match_date_to?events?MatchID=${match['Match-id']}&time=${userTimeZone}`;
+    const apiUrl = `https://ko.best-goal.live/yallashoot.php?events?MatchID=${match['Match-id']}&time=${userTimeZone}`;
 
     try {
         const response = await fetch(apiUrl);
@@ -541,7 +541,7 @@ async function fetchEventsAndLineup(match) {
 
 async function fetchStats(matchId) {
     document.querySelector('#tab-stats').innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
-    const apiUrl = `https://www.ysscores.com/ar/match_date_tostats/?MatchID=${matchId}`;
+    const apiUrl = `https://ko.best-goal.live/yallashoot.php?stats/?MatchID=${matchId}`;
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -928,6 +928,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
