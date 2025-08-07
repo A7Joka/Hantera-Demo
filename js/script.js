@@ -489,14 +489,14 @@ async function fetchMatches(dateString) {
     matchesLoadingSpinner.style.display = 'flex';
     matchesContainer.innerHTML = '';
     datePicker.value = dateString;
-    const apiUrl = `https://ko.best-goal.live/yallashoot.php?date=${dateString}&time=${userTimeZone}`;
+    const apiUrl = `https://ko.best-goal.live/state.php?date=${dateString}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error('API Error');
         const data = await response.json();
-      console.log("data returned from API 🔍", data);
+        console.log("data returned from API 🔍", data);
 
-        allMatchesData = data?.['STING-WEB-Matches'] || [];
+        allMatchesData = data?.['Leagues'] || [];
         displayMatches(allMatchesData);
     } catch (error) {
         console.error("Fetch Matches Error:", error);
@@ -1067,6 +1067,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
