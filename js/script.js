@@ -376,14 +376,14 @@ function renderEvents(events, match) {
   }
 
   // لتحديد الفريق يمين أو يسار بناءً على match object
-  const teamLeft = match['Team-Left']?.Name || 'Team-1';
-  const teamRight = match['Team-Right']?.Name || 'Team-2';
+  const teamRight = match['Team-Right']?.Name || 'Team-1';
+  const teamLeft = match['Team-Left']?.Name || 'Team-2';
 
   panel.innerHTML = `
     <div class="events-container">
       <div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>
       ${events.map(event => {
-        const isLeft = event.Team === 'Team-1'; // ممكن تعدله لو عندك فريقين باسماء صريحة
+        const isLeft = event.Team === 'Team-2'; // ممكن تعدله لو عندك فريقين باسماء صريحة
         const playerName = event.Primary_Player?.Name || 'لاعب غير معروف';
         const playerImage = event.Primary_Player?.Image || '';
         const subPlayer = event.Secondary_Player?.Name || null;
@@ -1067,6 +1067,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
