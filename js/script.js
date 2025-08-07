@@ -655,7 +655,7 @@ const data = await response.json();
       (matchStatus === 'status-not-started' && diffInSeconds <= 1200 && diffInSeconds > 0);
     if (shouldFetchStreams) {
       await fetchAndDisplayStreams(match);
-      
+        }
     renderInfo(details['Match_Info'], match);
     renderLineup(details['Lineup'], match);
     renderEvents(details['Events'], match);
@@ -1070,6 +1070,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
