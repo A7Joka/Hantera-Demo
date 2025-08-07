@@ -410,6 +410,7 @@ return `
     ${isLeft ? '<div style="width:45%"></div>' : ''}
   </div>
 `;
+}).join('')}</div>`;}
 
 
 function renderStats(stats) {
@@ -1079,6 +1080,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
