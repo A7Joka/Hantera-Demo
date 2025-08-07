@@ -357,8 +357,8 @@ const panel = document.getElementById('tab-lineup');
 
   panel.innerHTML = `
     <div class="lineup-container">
-      ${renderTeam(awayPlayers, awayTeam.Name, awayTeam.Logo, lineup.Away_Team_Formation, awayCoach)}
       ${renderTeam(homePlayers, homeTeam.Name, homeTeam.Logo, lineup.Home_Team_Formation, homeCoach)}
+      ${renderTeam(awayPlayers, awayTeam.Name, awayTeam.Logo, lineup.Away_Team_Formation, awayCoach)}
     </div>
   `;
 }
@@ -377,7 +377,7 @@ function renderEvents(events, match) {
     <div class="events-container">
       <div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>
       ${events.map(event => {
-        const isLeft = event.Team === 'Team-2'; // ممكن تعدله لو عندك فريقين باسماء صريحة
+        const isLeft = team === 'Team-2'; // ممكن تعدله لو عندك فريقين باسماء صريحة
         const playerName = event.player_a || 'لاعب غير معروف';
         const playerImage = event.player_a_image || '';
         const subPlayer = event.player_b || null;
@@ -396,23 +396,7 @@ function renderEvents(events, match) {
         
         const time = event.Time || event.minute + `'` || '';
 
-        return `
-        <div class="event-item ${isLeft ? 'left' : 'right'}">
-          <div class="event-details">
-            <div class="event-icon">${event.event_icon}</div>
-            <div class="event-text">
-              <div class="player-name">${playerName}</div>
-              ${extraPlayerHTML}
-            </div>
-          </div>
-          <div class="event-time bg-gray-200 dark:bg-gray-900">${time}</div>
-        </div>
-        `.replace(/^<div class="event-item right">/, '<div class="event-item right"><div style="width:45%"></div>')
-         .replace(/<\/div>$/, `${isLeft ? '<div style="width:45%"></div>' : ''}</div>`);
-      }).join('')}
-    </div>
-  `;
-}
+        return ` <div class="event-item ${isLeft ? 'left' : 'right'}"><div class="event-details"><div class="event-icon">${event.event_icon}</div><div class="event-text"><div class="player-name">${playerName}</div>${extraPlayerHTML}</div></div><div class="event-time bg-gray-200 dark:bg-gray-900">${time}</div></div>`.replace(/^<div class="event-item right">/, '<div class="event-item right"><div style="width:45%"></div>').replace(/<\/div>$/, `${isLeft ? '<div style="width:45%"></div>' : ''}</div>`);}).join('')}</div>`;}
 
 
 function renderStats(stats) {
@@ -1082,6 +1066,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
