@@ -27,7 +27,7 @@ const container = document.getElementById("home-matches-container");
   try {
     const res = await fetch(`https://ko.best-goal.live/yallashoot.php?date=2025-08-06&&time=${userTimeZone}`);
     const json = await res.json();
-    const allMatches = data.Leagues.flatMap(league => league.Matches || []);
+    const allMatches = json.Leagues.flatMap(league => league.Matches || []);
     const matches = allMatches.slice(0, 5);
     alllMatchesData = matches;
     matches.forEach(match => {
