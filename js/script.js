@@ -340,7 +340,7 @@ function renderLineup(lineup, match) {
           ${starters.map(p => `
             <li class="player-item flex items-center gap-2">
               <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-              <span class="player-name text-sm text-gray-800 dark:text-gray-100">#${p.player.player_number} ${p.player.title} - ${p.player.position}</span>
+              <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
             </li>`).join('')}
         </ul>
       </div>
@@ -351,7 +351,7 @@ function renderLineup(lineup, match) {
           ${substitutes.map(p => `
             <li class="player-item flex items-center gap-2">
               <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-              <span class="player-name text-sm text-gray-800 dark:text-gray-100">#${p.player.player_number} ${p.player.title} - ${p.player.position}</span>
+              <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
             </li>`).join('')}
         </ul>
       </div>
@@ -1067,6 +1067,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
