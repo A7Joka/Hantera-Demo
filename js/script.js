@@ -243,24 +243,19 @@ function displayTransfers(transfers) {
 }
 
 function renderInfo(info, match) {
-    const panel = document.getElementById('tab-info');
-    if (!info || !match) {
-        panel.innerHTML = "<p style='text-align:center;'>التفاصيل غير متاحة.</p>";
-        return;
-    }
+  const panel = document.getElementById('tab-info');
+  if (!info || !match) {
+    panel.innerHTML = "<p style='text-align:center;'>التفاصيل غير متاحة.</p>";
+    return;
+  }
 
-    const infoMap = {};
-    info.forEach(item => {
-        infoMap[item.Name] = item.Value;
-    });
+  const formattedDateTime = `${info["تاريخ_المباراة"] || 'غير متاح'} - ${info["وقت_المباراة"] || ''}`;
 
-    const formattedDateTime = `${infoMap["تاريخ المباراة"] || 'غير متاح'} - ${infoMap["وقت المباراة"] || ''}`;
-
-    panel.innerHTML = `
+  panel.innerHTML = `
     <div class="info-container grid grid-cols-1 sm:grid-cols-2 gap-3 p-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-lg">
       <div class="info-item flex">
         <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">البطولة:</span>
-        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${match['Cup-Name']}</span>
+        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${info["البطولة"] || match['Cup-Name']}</span>
       </div>
       <div class="info-item flex">
         <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">التاريخ:</span>
@@ -272,15 +267,16 @@ function renderInfo(info, match) {
       </div>
       <div class="info-item flex">
         <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">الملعب:</span>
-        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${infoMap['ملعب المباراة'] || 'غير محدد'}</span>
+        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${info["ملعب_المباراة"] || 'غير محدد'}</span>
       </div>
       <div class="info-item flex">
         <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">القناة:</span>
-        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${infoMap['القناة الناقلة'] || 'غير متاح'}</span>
+        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${info["القناة_الناقلة"] || 'غير متاح'}</span>
       </div>
     </div>
-    `;
+  `;
 }
+
 
 
 function renderLineup(lineup, match) {
@@ -648,9 +644,9 @@ if (!details || !details['Match-Info']) {
       await fetchAndDisplayStreams(match);
     }
 
-    renderInfo(details['Match-Info'], match);
-    renderLineup(details['Match-Lineup'], match);
-    renderEvents(details['Match-Events'], match);
+    renderInfo(details['Match_Info'], match);
+    renderLineup(details['Lineup'], match);
+    renderEvents(details['Events'], match);
 
   } catch (e) {
     console.error("Fetch Details Error:", e);
@@ -1049,6 +1045,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
