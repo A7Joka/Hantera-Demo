@@ -92,6 +92,18 @@ const newsArticleContent = document.getElementById('news-article-content');
 const backToNewsBtn = document.getElementById('backToNewsBtn');
 
 // --- RENDER & DISPLAY FUNCTIONS ---
+function flattenMatchesFromLeagues(leagues) {
+    return leagues.flatMap(league => {
+        const cupInfo = {
+            'Cup-id': league['Cup-id'],
+            'Cup-Name': league['Cup-Name'],
+            'Cup-Logo': league['Cup-Logo'],
+            'Cup-Link': league['Cup-Link']
+        };
+        return (league.Matches || []).map(match => ({ ...match, ...cupInfo }));
+    });
+}
+
 function displayMatches(leagues) {
     if (!leagues || leagues.length === 0) {
         matchesContainer.innerHTML = `<p style="text-align:center;">لا توجد مباريات في هذا اليوم.</p>`;
@@ -520,7 +532,7 @@ async function fetchMatches(dateString) {
         const data = await response.json();
         console.log("data returned from API 🔍", data);
 
-        allMatchesData = data?.['Leagues'] || [];
+        allMatchesData = flattenMatchesFromLeagues(data.Leagues);
         displayMatches(allMatchesData);
     } catch (error) {
         console.error("Fetch Matches Error:", error);
@@ -1091,6 +1103,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
