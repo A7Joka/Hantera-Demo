@@ -396,7 +396,20 @@ function renderEvents(events, match) {
         
         const time = event.Time || event.minute + `'` || '';
 
-        return ` <div class="event-item ${isLeft ? 'left' : 'right'}"><div class="event-details"><div class="event-icon">${event.event_icon}</div><div class="event-text"><div class="player-name">${playerName}</div>${extraPlayerHTML}</div></div><div class="event-time bg-gray-200 dark:bg-gray-900">${time}</div></div>`.replace(/^<div class="event-item right">/, '<div class="event-item right"><div style="width:45%"></div>').replace(/<\/div>$/, `${isLeft ? '<div style="width:45%"></div>' : ''}</div>`);}).join('')}</div>`;}
+return `
+  <div class="event-item ${isLeft ? 'left' : 'right'}">
+    ${!isLeft ? '<div style="width:45%"></div>' : ''}
+    <div class="event-details">
+      <div class="event-icon">${event.event_icon}</div>
+      <div class="event-text">
+        <div class="player-name">${playerName}</div>
+        ${extraPlayerHTML}
+      </div>
+    </div>
+    <div class="event-time bg-gray-200 dark:bg-gray-900">${time}</div>
+    ${isLeft ? '<div style="width:45%"></div>' : ''}
+  </div>
+`;
 
 
 function renderStats(stats) {
@@ -1066,6 +1079,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
