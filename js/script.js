@@ -377,7 +377,7 @@ function renderEvents(events, match) {
     <div class="events-container">
       <div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>
       ${events.map(event => {
-        const isLeft = team === 'Team-2'; // ممكن تعدله لو عندك فريقين باسماء صريحة
+        const isLeft = event.team === 'Team-2'; // ممكن تعدله لو عندك فريقين باسماء صريحة
         const playerName = event.player_a || 'لاعب غير معروف';
         const playerImage = event.player_a_image || '';
         const subPlayer = event.player_b || null;
@@ -1080,6 +1080,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
