@@ -331,7 +331,7 @@ const panel = document.getElementById('tab-lineup');
         </div>
       </div>
       <div>
-                <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">التشكيلة الأساسية</div>
+                 <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">التشكيلة الأساسية</div>
         <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${starters.map(p => `
             <li class="player-item flex items-center gap-2">
@@ -339,6 +339,18 @@ const panel = document.getElementById('tab-lineup');
               <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
             </li>`).join('')}
         </ul>
+      </div>
+
+      <div>
+        <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mt-4 mb-2">الاحتياطي</div>
+        <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
+          ${substitutes.map(p => `
+            <li class="player-item flex items-center gap-2">
+              <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
+              <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
+            </li>`).join('')}
+        </ul>
+        </div>
       </div>
     `;
   };
@@ -1070,6 +1082,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
