@@ -679,7 +679,7 @@ async function fetchStats(Matchid) {
     console.error("Fetch Stats Error:", e);
     document.querySelector('#tab-stats').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل الإحصائيات</p>';
   }
-
+}
 async function fetchAndDisplayStreams(match) {
     const matchId = match['Match-id'].toString();
     const streamsRef = collection(db, "matches", matchId, "streams");
@@ -1070,6 +1070,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
