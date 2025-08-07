@@ -512,7 +512,7 @@ async function fetchEventsAndLineup(match) {
         document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
     });
 
-    const apiUrl = ` /api/matches/events/?MatchID=${match['Match-id']}&time=${userTimeZone}`;
+    const apiUrl = `https://ko.best-goal.live/state.php?MatchID=${match['Match-id']}`;
 
     try {
         const response = await fetch(apiUrl);
@@ -555,7 +555,7 @@ async function fetchEventsAndLineup(match) {
 
 async function fetchStats(matchId) {
     document.querySelector('#tab-stats').innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
-    const apiUrl = ` /api/matches/stats/?MatchID=${matchId}`;
+    const apiUrl = `https://ko.best-goal.live/state.php?MatchID=${matchId}`;
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -737,11 +737,23 @@ matchesContainer.addEventListener('click', (e) => {
         const matchBody = e.target.closest('.match-body');
         if (matchBody) {
             const matchId = matchBody.dataset.matchId;
-            const matchData = allMatchesData.find(m => m['Match-id'] == matchId);
-            if (matchData) showMatchDetailsPage(matchData);
+            // فحص احتياطي
+            if (!matchId) return;
+
+            const matchData = allMatchesData.find(m => {
+                // نعمل تطابق آمن، سواء كان رقم أو نص
+                return String(m['Match-id']) === String(matchId);
+            });
+
+            if (matchData) {
+                showMatchDetailsPage(matchData);
+            } else {
+                console.warn("Match not found:", matchId);
+            }
         }
     }
 });
+
 matchesContainer.addEventListener('touchstart', (e) => {
     const matchBody = e.target.closest('.match-body');
     if (matchBody) {
@@ -942,6 +954,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
