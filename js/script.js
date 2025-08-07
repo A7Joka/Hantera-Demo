@@ -93,15 +93,21 @@ const backToNewsBtn = document.getElementById('backToNewsBtn');
 
 // --- RENDER & DISPLAY FUNCTIONS ---
 function flattenMatchesFromLeagues(leagues) {
-    return leagues.flatMap(league => {
-        const cupInfo = {
-            'Cup-id': league['Cup-id'],
-            'Cup-Name': league['Cup-Name'],
-            'Cup-Logo': league['Cup-Logo'],
-            'Cup-Link': league['Cup-Link']
-        };
-        return (league.Matches || []).map(match => ({ ...match, ...cupInfo }));
+  const flatMatches = [];
+  leagues.forEach(league => {
+    if (!league.Matches || !Array.isArray(league.Matches)) return;
+
+    league.Matches.forEach(match => {
+      flatMatches.push({
+        ...match,
+        'Cup-id': league['Cup-id'],
+        'Cup-Name': league['Cup-Name'],
+        'Cup-Logo': league['Cup-Logo'],
+        'Cup-Link': league['Cup-Link'],
+      });
     });
+  });
+  return flatMatches;
 }
 
 function displayMatches(leagues) {
@@ -1103,6 +1109,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
