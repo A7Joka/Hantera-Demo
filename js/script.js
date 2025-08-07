@@ -92,56 +92,70 @@ const newsArticleContent = document.getElementById('news-article-content');
 const backToNewsBtn = document.getElementById('backToNewsBtn');
 
 // --- RENDER & DISPLAY FUNCTIONS ---
-function displayMatches(matches) {
-    if (!matches || matches.length === 0) {
+function displayMatchesFromLeagues(leagues) {
+    if (!leagues || leagues.length === 0) {
         matchesContainer.innerHTML = `<p style="text-align:center;">لا توجد مباريات في هذا اليوم.</p>`;
         return;
     }
-    const matchesByCup = matches.reduce((acc, match) => {
-        (acc[match['Cup-id']] = acc[match['Cup-id']] || {
-            cupInfo: match,
-            matches: []
-        }).matches.push(match);
-        return acc;
-    }, {});
-  
-    matchesContainer.innerHTML = Object.values(matchesByCup).map(cupData => `
+
+    matchesContainer.innerHTML = leagues.map(league => {
+        const cupInfo = league;
+        const matches = league.Matches || [];
+
+        const validMatches = matches.filter(match => {
+            if (!match['Team-Left'] || !match['Team-Right']) {
+                console.warn('Skipped match with missing team data:', match);
+                return false;
+            }
+            return true;
+        });
+
+        if (validMatches.length === 0) return '';
+
+        return `
         <div class="match-card bg-gray-200 dark:bg-gray-900">
-            <div class="cup-header bg-gray-200 dark:bg-gray-900"><img src="${cupData.cupInfo['Cup-Logo']}" alt="" class="cup-logo"><h2 class="cup-name">${cupData.cupInfo['Cup-Name']}</h2></div>
-            ${cupData.matches.map(match => {
-              if (!match['Team-Left'] || !match['Team-Right']) {
-  console.warn('Skipped match with missing team data:', match);
-  return '';
-}
-const detailsContent = (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت') ?
-  `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>` :
-  `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
+            <div class="cup-header bg-gray-200 dark:bg-gray-900">
+                <img src="${cupInfo['Cup-Logo']}" alt="" class="cup-logo">
+                <h2 class="cup-name">${cupInfo['Cup-Name']}</h2>
+            </div>
+            ${validMatches.map(match => {
+                const detailsContent = (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت') ?
+                    `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>` :
+                    `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
 
                 let statusClass = 'status-not-started';
-                if (match['Match-Status'] === 'انتهت' || match['Match-Status'] === 'بعد الوقت الإضافي' || match['Match-Status'] === 'بعد ركلات الترجيح' || match['Match-Status'] === 'انتهت للتو' ) statusClass = 'status-finished';
-                else if (match['Match-Status'] === 'تأجلت') statusClass = 'status-postponed';
-                else if (match['Match-Status'] !== 'لم تبدأ') statusClass = 'status-live';
-                return `  <div class="match-body bg-gray-200 dark:bg-gray-900 mb-1 mt-1" data-match-id="${match['Match-id']}">
-    <div class="match-part part-logo bg-gray-100 dark:bg-gray-700">
-      <img src="${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
-    </div>
-    <div class="match-part part-name text-gray-800 dark:text-gray-100">
-      <span class="team-name">${match['Team-Left']['Name']}</span>
-    </div>
-    <div class="match-part part-center ${statusClass}">
-      ${detailsContent}
-      <span class="match-status">${match['Match-Status']}</span>
-    </div>
-    <div class="match-part part-name text-gray-800 dark:text-gray-100">
-      <span class="team-name">${match['Team-Right']['Name']}</span>
-    </div>
-    <div class="match-part part-logo bg-gray-100 dark:bg-gray-700">
-      <img src="${match['Team-Right']['Logo']}" alt="${match['Team-Right']['Name']}" class="match-logo" />
-    </div>
-  </div>`;
+                if (['إنتهت المباراة', 'بعد الوقت الإضافي', 'بعد ركلات الترجيح', 'انتهت للتو'].includes(match['Match-Status'])) {
+                    statusClass = 'status-finished';
+                } else if (match['Match-Status'] === 'تأجلت') {
+                    statusClass = 'status-postponed';
+                } else if (match['Match-Status'] !== 'لم تبدأ') {
+                    statusClass = 'status-live';
+                }
+
+                return `
+                <div class="match-body bg-gray-200 dark:bg-gray-900 mb-1 mt-1" data-match-id="${match['Match-id']}">
+                    <div class="match-part part-logo bg-gray-100 dark:bg-gray-700">
+                        <img src="${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
+                    </div>
+                    <div class="match-part part-name text-gray-800 dark:text-gray-100">
+                        <span class="team-name">${match['Team-Left']['Name']}</span>
+                    </div>
+                    <div class="match-part part-center ${statusClass}">
+                        ${detailsContent}
+                        <span class="match-status">${match['Match-Status']}</span>
+                    </div>
+                    <div class="match-part part-name text-gray-800 dark:text-gray-100">
+                        <span class="team-name">${match['Team-Right']['Name']}</span>
+                    </div>
+                    <div class="match-part part-logo bg-gray-100 dark:bg-gray-700">
+                        <img src="${match['Team-Right']['Logo']}" alt="${match['Team-Right']['Name']}" class="match-logo" />
+                    </div>
+                </div>`;
             }).join('')}
-        </div>`).join('');
+        </div>`;
+    }).join('');
 }
+
 function createMatchCard(match) {
 
   const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت';
@@ -346,7 +360,7 @@ function renderLineup(lineup, match) {
           ${starters.map(p => `
             <li class="player-item flex items-center gap-2">
               <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-              <span class="player-name text-sm text-gray-800 dark:text-gray-100">#${p.player.player_number} ${p.player.title} - ${p.player.position}</span>
+              <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
             </li>`).join('')}
         </ul>
       </div>
@@ -357,7 +371,7 @@ function renderLineup(lineup, match) {
           ${substitutes.map(p => `
             <li class="player-item flex items-center gap-2">
               <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-              <span class="player-name text-sm text-gray-800 dark:text-gray-100">#${p.player.player_number} ${p.player.title} - ${p.player.position}</span>
+              <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
             </li>`).join('')}
         </ul>
       </div>
@@ -390,16 +404,16 @@ function renderEvents(events, match) {
       <div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>
       ${events.map(event => {
         const isLeft = event.Team === 'Team-2'; // ممكن تعدله لو عندك فريقين باسماء صريحة
-        const playerName = event.player_a?.Name || 'لاعب غير معروف';
-        const playerImage = event.player_a?.Image || '';
-        const subPlayer = event.player_b?.Name || null;
+        const playerName = event.player_a || 'لاعب غير معروف';
+        const playerImage = event.player_a_image || '';
+        const subPlayer = event.player_b || null;
 
         let extraPlayerHTML = '';
         if (subPlayer) {
-          if (event.Event_Name === 'تبديل لاعب') {
+          if (event.event_name === 'تبديل لاعب') {
             extraPlayerHTML = `<div class="event-assist">خارج: ${subPlayer}</div>`;
           } else {
-            if (event.Event_Name === 'هدف') {
+            if (event.event_name === 'هدف') {
               extraPlayerHTML = `<div class="event-assist">صناعة: ${subPlayer}</div>`;
             } else {
               extraPlayerHTML = `<div class="event-assist">${subPlayer}</div>`;
@@ -1077,6 +1091,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
