@@ -92,7 +92,7 @@ const newsArticleContent = document.getElementById('news-article-content');
 const backToNewsBtn = document.getElementById('backToNewsBtn');
 
 // --- RENDER & DISPLAY FUNCTIONS ---
-function displayMatchesFromLeagues(leagues) {
+function displayMatches(leagues) {
     if (!leagues || leagues.length === 0) {
         matchesContainer.innerHTML = `<p style="text-align:center;">لا توجد مباريات في هذا اليوم.</p>`;
         return;
@@ -1091,6 +1091,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
