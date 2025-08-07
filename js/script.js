@@ -306,8 +306,8 @@ const panel = document.getElementById('tab-lineup');
   }
 
   // 🧠 استخراج بيانات الفريقين من match
-  const homeTeam = match['Team-Right'];
-  const awayTeam = match['Team-Left'];
+  const homeTeam = match['Team-Left'];
+  const awayTeam = match['Team-Right'];
 
   // 🧠 استخراج التشكيلة من JSON الجديد
   const homePlayers = [...(lineup.Home_Lineup || []), ...(lineup.Home_Substitutes || [])];
@@ -380,7 +380,7 @@ function renderEvents(events, match) {
         const isLeft = event.team === 'Team-2'; // ممكن تعدله لو عندك فريقين باسماء صريحة
         const playerName = event.player_a || 'لاعب غير معروف';
         const playerImage = event.player_a_image || '';
-        const subPlayer = event.player_b || null;
+        const subPlayer = event.player_s || null;
         let extraPlayerHTML = '';
         if (subPlayer) {
           if (event.event_name === 'تبديل لاعب') {
@@ -400,7 +400,7 @@ return `
   <div class="event-item ${isLeft ? 'left' : 'right'}">
     ${!isLeft ? '<div style="width:45%"></div>' : ''}
     <div class="event-details">
-      <div class="event-icon">${event.event_icon}</div>
+      <div class="event-icon"><svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" width="30" height="20">${event.event_icon}</svg></div>
       <div class="event-text">
         <div class="player-name">${playerName}</div>
         ${extraPlayerHTML}
@@ -1080,6 +1080,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
