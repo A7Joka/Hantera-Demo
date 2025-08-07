@@ -108,9 +108,13 @@ function displayMatches(matches) {
         <div class="match-card bg-gray-200 dark:bg-gray-900">
             <div class="cup-header bg-gray-200 dark:bg-gray-900"><img src="${cupData.cupInfo['Cup-Logo']}" alt="" class="cup-logo"><h2 class="cup-name">${cupData.cupInfo['Cup-Name']}</h2></div>
             ${cupData.matches.map(match => {
-                const detailsContent = (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت') ?
-                     `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>`
-    : `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
+const leftGoal = match['Team-Left']?.Goal ?? '-';
+const rightGoal = match['Team-Right']?.Goal ?? '-';
+
+const detailsContent = (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت') ?
+  `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>` :
+  `<div class="match-result">${leftGoal} - ${rightGoal}</div>`;
+
                 let statusClass = 'status-not-started';
                 if (match['Match-Status'] === 'انتهت' || match['Match-Status'] === 'بعد الوقت الإضافي' || match['Match-Status'] === 'بعد ركلات الترجيح' || match['Match-Status'] === 'انتهت للتو' ) statusClass = 'status-finished';
                 else if (match['Match-Status'] === 'تأجلت') statusClass = 'status-postponed';
@@ -1067,6 +1071,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
