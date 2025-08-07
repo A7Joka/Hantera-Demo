@@ -25,7 +25,7 @@ async function loadMatches() {
       hmals.style.display = 'flex';
 const container = document.getElementById("home-matches-container");
   try {
-    const res = await fetch(`https://ko.best-goal.live/yallashoot.php?date=2025-08-06&&time=${userTimeZone}`);
+    const res = await fetch(`https://ko.best-goal.live/state.php?date=today`);
     const json = await res.json();
     const allMatches = json.Leagues.flatMap(league => league.Matches || []);
     const matches = allMatches.slice(0, 5);
