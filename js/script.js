@@ -104,16 +104,18 @@ function displayMatches(matches) {
         }).matches.push(match);
         return acc;
     }, {});
+  
     matchesContainer.innerHTML = Object.values(matchesByCup).map(cupData => `
         <div class="match-card bg-gray-200 dark:bg-gray-900">
             <div class="cup-header bg-gray-200 dark:bg-gray-900"><img src="${cupData.cupInfo['Cup-Logo']}" alt="" class="cup-logo"><h2 class="cup-name">${cupData.cupInfo['Cup-Name']}</h2></div>
             ${cupData.matches.map(match => {
-const leftGoal = match['Team-Left']?.Goal ?? '-';
-const rightGoal = match['Team-Right']?.Goal ?? '-';
-
+              if (!match['Team-Left'] || !match['Team-Right']) {
+  console.warn('Skipped match with missing team data:', match);
+  return '';
+}
 const detailsContent = (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت') ?
   `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>` :
-  `<div class="match-result">${leftGoal} - ${rightGoal}</div>`;
+  `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
 
                 let statusClass = 'status-not-started';
                 if (match['Match-Status'] === 'انتهت' || match['Match-Status'] === 'بعد الوقت الإضافي' || match['Match-Status'] === 'بعد ركلات الترجيح' || match['Match-Status'] === 'انتهت للتو' ) statusClass = 'status-finished';
@@ -344,7 +346,7 @@ function renderLineup(lineup, match) {
           ${starters.map(p => `
             <li class="player-item flex items-center gap-2">
               <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-              <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
+              <span class="player-name text-sm text-gray-800 dark:text-gray-100">#${p.player.player_number} ${p.player.title} - ${p.player.position}</span>
             </li>`).join('')}
         </ul>
       </div>
@@ -355,7 +357,7 @@ function renderLineup(lineup, match) {
           ${substitutes.map(p => `
             <li class="player-item flex items-center gap-2">
               <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-              <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
+              <span class="player-name text-sm text-gray-800 dark:text-gray-100">#${p.player.player_number} ${p.player.title} - ${p.player.position}</span>
             </li>`).join('')}
         </ul>
       </div>
@@ -388,25 +390,29 @@ function renderEvents(events, match) {
       <div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>
       ${events.map(event => {
         const isLeft = event.Team === 'Team-2'; // ممكن تعدله لو عندك فريقين باسماء صريحة
-        const playerName = event.Primary_Player?.Name || 'لاعب غير معروف';
-        const playerImage = event.Primary_Player?.Image || '';
-        const subPlayer = event.Secondary_Player?.Name || null;
+        const playerName = event.player_a?.Name || 'لاعب غير معروف';
+        const playerImage = event.player_a?.Image || '';
+        const subPlayer = event.player_b?.Name || null;
 
         let extraPlayerHTML = '';
         if (subPlayer) {
           if (event.Event_Name === 'تبديل لاعب') {
             extraPlayerHTML = `<div class="event-assist">خارج: ${subPlayer}</div>`;
           } else {
-            extraPlayerHTML = `<div class="event-assist">${subPlayer}</div>`;
+            if (event.Event_Name === 'هدف') {
+              extraPlayerHTML = `<div class="event-assist">صناعة: ${subPlayer}</div>`;
+            } else {
+              extraPlayerHTML = `<div class="event-assist">${subPlayer}</div>`;
+            }
           }
         }
 
-        const time = event.Time || event.Minute + `'` || '';
+        const time = event.Time || event.minute + `'` || '';
 
         return `
         <div class="event-item ${isLeft ? 'left' : 'right'}">
           <div class="event-details">
-            <div class="event-icon-svg">${event.Event_Icon_SVG}</div>
+            <div class="event-icon">${event.event_icon}</div>
             <div class="event-text">
               <div class="player-name">${playerName}</div>
               ${extraPlayerHTML}
@@ -1071,6 +1077,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
