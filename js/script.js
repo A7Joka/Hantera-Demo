@@ -249,33 +249,55 @@ function renderInfo(info, match) {
     return;
   }
 
-  const formattedDateTime = `${info["تاريخ_المباراة"] || 'غير متاح'} - ${info["وقت_المباراة"] || ''}`;
+  // تجهيز القنوات والمعلقين
+  const channels = [];
+  for (let i = 1; i <= 5; i++) {
+    const channel = info[`القناة_الناقلة_${i}`] || (i === 1 ? info[`القناة_الناقلة`] : null);
+    const commentator = info[`المعلق_${i}`];
+
+    if (channel) {
+      const label = commentator ? `${channel} - ${commentator}` : channel;
+      channels.push(label);
+    }
+  }
+
+  // بناء باقي العناصر
+  const ignoredKeys = new Set([
+    "القناة_الناقلة", "القناة_الناقلة_1", "القناة_الناقلة_2", "القناة_الناقلة_3",
+    "المعلق_1", "المعلق_2", "المعلق_3"
+  ]);
+
+  const otherInfo = Object.entries(info)
+    .filter(([key]) => !ignoredKeys.has(key))
+    .map(([key, value]) => {
+      const label = key.replace(/_/g, ' ');
+      return `
+        <div class="info-item flex">
+          <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-32">${label}:</span>
+          <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${value}</span>
+        </div>
+      `;
+    });
+
+  // إضافة القنوات الناقلة في الآخر
+  if (channels.length > 0) {
+    otherInfo.push(`
+      <div class="info-item flex">
+        <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-32">القنوات الناقلة:</span>
+        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">
+          ${channels.map(ch => `<div>${ch}</div>`).join('')}
+        </span>
+      </div>
+    `);
+  }
 
   panel.innerHTML = `
-    <div class="info-container grid grid-cols-1 sm:grid-cols-2 gap-3 p-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-lg">
-      <div class="info-item flex">
-        <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">البطولة:</span>
-        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${info["البطولة"] || match['Cup-Name']}</span>
-      </div>
-      <div class="info-item flex">
-        <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">التاريخ:</span>
-        <span class="info-value text-gray-800 dark:text-gray-100 flex-1 text-left rtl:text-right" dir="ltr">${formattedDateTime}</span>
-      </div>
-      <div class="info-item flex">
-        <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">الحالة:</span>
-        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${match['Match-Status']}</span>
-      </div>
-      <div class="info-item flex">
-        <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">الملعب:</span>
-        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${info["ملعب_المباراة"] || 'غير محدد'}</span>
-      </div>
-      <div class="info-item flex">
-        <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">القناة:</span>
-        <span class="info-value text-gray-800 dark:text-gray-100 flex-1">${info["القناة_الناقلة"] || 'غير متاح'}</span>
-      </div>
+    <div class="info-container grid grid-cols-1 sm:grid-cols-2 gap-3 p-2 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-lg">
+      ${otherInfo.join('')}
     </div>
   `;
 }
+
 
 
 
@@ -617,9 +639,9 @@ console.log("data from API", data); // 🌟 للمراجعة
 
 const details = data; // ✅ مش data['STING-WEB-Match-Details']
 
-if (!details || !details['Match-Info']) {
-  console.error("No Match-Info found in details!", details);
-  throw new Error("Missing Match-Info");
+if (!details || !details['Match_Info']) {
+  console.error("No Match_Info found in details!", details);
+  throw new Error("Missing Match_Info");
 }
 
 
@@ -1045,6 +1067,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
