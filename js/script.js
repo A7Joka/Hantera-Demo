@@ -366,20 +366,19 @@ async function fetchMatches(dateString) {
         const data = await response.json();
         
         // استخراج الـ matches من كل دوري
-        const allMatchesData = [];
-        const leagues = data?.['Leagues'] || [];
+        allMatchesData = []; // important!
+const leagues = data?.Leagues || [];
+leagues.forEach(league => {
+  const leagueMatches = league.Matches || [];
+  leagueMatches.forEach(match => {
+    match['Cup-id'] = league['Cup-id'];
+    match['Cup-Name'] = league['Cup-Name'];
+    match['Cup-Logo'] = league['Cup-Logo'];
+    allMatchesData.push(match);
+  });
+});
+displayMatches(allMatchesData);
 
-        leagues.forEach(league => {
-            league.Matches.forEach(match => {
-                // نضيف معلومات الدوري لكل ماتش عشان نستخدمها زي زمان
-                match['Cup-id'] = league['Cup-id'];
-                match['Cup-Name'] = league['Cup-Name'];
-                match['Cup-Logo'] = league['Cup-Logo'];
-                allMatchesData.push(match);
-            });
-        });
-
-        displayMatches(allMatchesData);
     } catch (error) {
         console.error("Fetch Matches Error:", error);
         matchesContainer.innerHTML = `<p style="text-align:center; color:red;">حدث خطأ في تحميل المباريات.</p>`;
@@ -739,7 +738,8 @@ matchesContainer.addEventListener('click', (e) => {
             const matchId = matchBody.dataset.matchId;
             // فحص احتياطي
             if (!matchId) return;
-console.log(allMatchesData.slice(0, 5));
+          console.log("Matches loaded:", allMatchesData.length);
+console.log(allMatchesData.map(m => m['Match-id']));
 console.log("Clicked Match ID:", matchId);
             const matchData = allMatchesData.find(m => {
                 // نعمل تطابق آمن، سواء كان رقم أو نص
@@ -955,6 +955,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
