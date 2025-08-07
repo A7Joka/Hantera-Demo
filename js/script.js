@@ -739,7 +739,8 @@ matchesContainer.addEventListener('click', (e) => {
             const matchId = matchBody.dataset.matchId;
             // فحص احتياطي
             if (!matchId) return;
-
+console.log(allMatchesData.slice(0, 5));
+console.log("Clicked Match ID:", matchId);
             const matchData = allMatchesData.find(m => {
                 // نعمل تطابق آمن، سواء كان رقم أو نص
                 return String(m['Match-id']) === String(matchId);
@@ -954,6 +955,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
