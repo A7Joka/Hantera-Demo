@@ -108,26 +108,26 @@ function displayMatches(matches) {
         <div class="match-card bg-gray-200 dark:bg-gray-900">
             <div class="cup-header bg-gray-200 dark:bg-gray-900"><img src="${cupData.cupInfo['Cup-Logo']}" alt="" class="cup-logo"><h2 class="cup-name">${cupData.cupInfo['Cup-Name']}</h2></div>
             ${cupData.matches.map(match => {
-              function convertTo24Hour(timeStr) {
-        const [time, modifier] = timeStr.split(' ');
-        let [hours, minutes] = time.split(':').map(Number);
-        if (modifier === 'م' && hours < 12) hours += 12;
-        if (modifier === 'ص' && hours === 12) hours = 0;
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-      }
-
-      const datePart = match['match_date_time'].split(' ')[0];
-      const timePart = convertTo24Hour(match['Match-Start-Time']);
-      const fullDateTime = `${datePart}T${timePart}:00+02:00`;
-      const localTime = new Date(fullDateTime);
-      const localTimeString = localTime.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      });
-                const detailsContent = (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت') ?
-                     `<div class="match-time">${localTimeString}</div>`
-    : `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
+              let detailsContent;
+              if (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت') {
+                const matchTimeStr = match['Match-Start-Time'];
+                const matchDateStr = match['match_date_time'];
+                let localTimeString = '—';
+                if (matchTimeStr && matchDateStr) {
+                  const datePart = matchDateStr.split(' ')[0];
+                  const timePart = convertTo24Hour(matchTimeStr);
+                  const fullDateTime = `${datePart}T${timePart}:00+02:00`;
+                  const localTime = new Date(fullDateTime);
+                  localTimeString = localTime.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                  });
+                }
+                detailsContent = `<div class="match-time">${localTimeString}</div>`;
+              } else {
+                detailsContent = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
+              }
                 let statusClass = 'status-not-started';
                 if (match['Match-Status'] === 'انتهت' || match['Match-Status'] === 'بعد الوقت الإضافي' || match['Match-Status'] === 'بعد ركلات الترجيح' || match['Match-Status'] === 'انتهت للتو' ) statusClass = 'status-finished';
                 else if (match['Match-Status'] === 'تأجلت') statusClass = 'status-postponed';
@@ -1097,6 +1097,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
