@@ -513,6 +513,8 @@ function renderEvents(events, match) {
               extraPlayerHTML = `<div class="event-assist">${subPlayer}</div>`;
             }
           }
+        } else {
+          extraPlayerHTML = `<div class="event-assist">${event.event_name}</div>`;
         }
         
         const time = event.Time || event.minute + `'` || '';
@@ -1194,6 +1196,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
