@@ -433,6 +433,23 @@ return `
 `;
 }).join('')}</div>`;}
 
+const desiredOrder = [
+  'الاستحواذ',
+  'التسديدات',
+  'التسديد علي المرمي',
+  'التسديد بعيدا عن المرمي',
+  'تسديدات تم اعتراضها',
+  'التسديدات من داخل الصندوق',
+  'التسديدات من خارج الصندوق',
+  'مجموع التمريرات',
+  'نسبة دقة التمرير',
+  'الركنيات',
+  'التسللات',
+  'مخالفات',
+  'تصديات حارس المرمى',
+  'البطاقات الصفراء',
+  'البطاقات الحمراء'
+];
 
 function renderStats(stats) {
   const panel = document.getElementById('tab-stats');
@@ -441,13 +458,16 @@ function renderStats(stats) {
     return;
   }
 
-  const combinedStats = stats.map(stat => ({
+  const sortedStats = stats
+    .filter(stat => desiredOrder.includes(stat.Name)) // تأكد بس نرتب اللي في اللستة
+    .sort((a, b) => desiredOrder.indexOf(a.Name) - desiredOrder.indexOf(b.Name));
+
+  const combinedStats = sortedStats.map(stat => ({
     name: stat.Name,
     valueLeft: parseStatValue(stat.Team1_Value),
     valueRight: parseStatValue(stat.Team2_Value)
   }));
 
-  // إزالة التكرارات بناءً على اسم الإحصائية
   const uniqueStats = [];
   const seenNames = new Set();
   for (const stat of combinedStats) {
@@ -457,38 +477,17 @@ function renderStats(stats) {
     }
   }
 
-  // حساب القيم القصوى علشان الأعمدة تكون متوازنة
-  const maxValues = {};
-  uniqueStats.forEach(stat => {
-    maxValues[stat.name] = Math.max(stat.valueLeft, stat.valueRight, 1);
-  });
-
-  panel.innerHTML = `
-    <div class="stats-container space-y-3">
-      ${uniqueStats.map(stat => {
-        const max = maxValues[stat.name];
-        const leftWidth = (stat.valueLeft / max) * 100;
-        const rightWidth = (stat.valueRight / max) * 100;
-
-        return `
-        <div class="stat-row flex flex-col gap-1">
-          <div class="stat-name text-center text-sm text-gray-700 dark:text-gray-300">${stat.name}</div>
-          <div class="stat-bar-wrapper flex items-center justify-between gap-2">
-            <div class="stat-side w-1/2 flex justify-start">
-              <div class="stat-bar bg-blue-600 dark:bg-blue-400 h-2 rounded-r-full" style="width: ${leftWidth}%"></div>
-            </div>
-            <div class="stat-values text-sm text-gray-800 dark:text-gray-100 w-10 text-center">
-              ${stat.valueLeft} - ${stat.valueRight}
-            </div>
-            <div class="stat-side w-1/2 flex justify-end">
-              <div class="stat-bar bg-red-600 dark:bg-red-400 h-2 rounded-l-full" style="width: ${rightWidth}%"></div>
-            </div>
-          </div>
-        </div>`;
-      }).join('')}
+  const statsHtml = uniqueStats.map(stat => `
+    <div class="stat-row">
+      <div class="stat-value">${stat.valueRight}</div>
+      <div class="stat-name">${stat.name}</div>
+      <div class="stat-value">${stat.valueLeft}</div>
     </div>
-  `;
+  `).join('');
+
+  panel.innerHTML = `<div class="stats-container space-y-3">${statsHtml}</div>`;
 }
+
 
 function parseStatValue(value) {
   if (typeof value === 'string') {
@@ -1097,6 +1096,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
