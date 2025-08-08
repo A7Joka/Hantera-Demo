@@ -477,7 +477,7 @@ const panel = document.getElementById('tab-lineup');
     </div>
   `;
 }
-function renderEvents(events, match) {
+function renderEvents(events, penalty, match) {
   const panel = document.getElementById('tab-events');
   if (!events || events.length === 0) {
     panel.innerHTML = "<p style='text-align:center;'>لا توجد أحداث مسجلة.</p>";
@@ -491,8 +491,8 @@ function cleanMinute(minute) {
   if (!minute) return '';
   return minute.replace(/[’']/g, '').trim();
 }
-function renderPenaltyShootout(match) {
-  const shootout = match['Penalty_Shootout'];
+function renderPenaltyShootout(penalty) {
+  const shootout = penalty;
   if (!shootout) return '';
 
   const kicks1 = shootout.Team1_Kicks || [];
@@ -574,8 +574,9 @@ const sortedEvents = [...events]
   .sort((a, b) => getEventOrder(a) - getEventOrder(b))
   .reverse(); // الأحدث أولاً
 
-const penaltyBlock = renderPenaltyShootout(match);
-console.log('Penalty Shootout Object:', match['Penalty_Shootout']);
+const penaltyBlock = renderPenaltyShootout(penalty);
+console.log('Penalty Shootout Object:', penalty);
+console.log('Match Object:', match);
 console.log('Penalty Block:', penaltyBlock);
 
   panel.innerHTML = `
@@ -608,24 +609,24 @@ console.log('Penalty Block:', penaltyBlock);
           }
             time = cleanMinute(event.minute)|| '';
         }
-
-return `
-  <div class="event-item ${isLeft ? 'left' : 'right'}">
-    ${!isLeft ? '<div style="width:45%"></div>' : ''}
-    <div class="event-details">
-      <div class="event-icon"><svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" width="30" height="20">${event.event_icon}</svg></div>
-      <div class="event-text">
+        return `
+        <div class="event-item ${isLeft ? 'left' : 'right'}">
+        ${!isLeft ? '<div style="width:45%"></div>' : ''}
+        <div class="event-details">
+        <div class="event-icon"><svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" width="30" height="20">${event.event_icon}</svg></div>
+        <div class="event-text">
         <div class="player-name">${playerName}</div>
         ${extraPlayerHTML}
-      </div>
-    </div>
-    <div class="event-time bg-gray-200 dark:bg-gray-900">${time}</div>
-    ${isLeft ? '<div style="width:45%"></div>' : ''}
-  </div>
-`;
-}).join('')}
-    ${penaltyBlock}
-</div>`;}
+        </div>
+        </div>
+        <div class="event-time bg-gray-200 dark:bg-gray-900">${time}</div>
+        ${isLeft ? '<div style="width:45%"></div>' : ''}
+        </div>
+        `;
+      }).join('')}
+      ${penaltyBlock}
+      </div>`;
+}
 
 const desiredOrder = [
   'الاستحواذ',
@@ -880,7 +881,7 @@ const data = await response.json();
         }
     renderInfo(details['Match_Info'], match);
     renderLineup(details['Lineup'], match);
-    renderEvents(details['Events'], match);
+    renderEvents(details['Events'], details['Penalty_Shootout'], match);
 
   } catch (e) {
     console.error("Fetch Details Error:", e);
@@ -1287,6 +1288,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
