@@ -7,15 +7,6 @@ function loadAllData() {
   setTimeout(() => fetchTournaments(), 1000);
   setTimeout(() => fetchNews(), 1500);
 }
-function getUserTimeZoneOffset() {
-    const offsetMinutes = new Date().getTimezoneOffset(); &t
-    const absMinutes = Math.abs(offsetMinutes);
-    const hours = String(Math.floor(absMinutes / 60)).padStart(2, '0');
-    const minutes = String(absMinutes % 60).padStart(2, '0');
-    const sign = offsetMinutes <= 0 ? '+' : '-';
-    return encodeURIComponent(`${sign}${hours}:${minutes}`);
-}
-const userTimeZone = getUserTimeZoneOffset();
 // FINAL STABLE VERSION - PART 1 of 4
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, setDoc, collection, getDocs, addDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -1198,8 +1189,8 @@ export {
   showMatchDetailsPage,
   displayStandings,
   showNewsArticle,
-  getUserTimeZoneOffset
 };
+
 
 
 
