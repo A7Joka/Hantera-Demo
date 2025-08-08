@@ -487,6 +487,45 @@ function renderEvents(events, match) {
   // لتحديد الفريق يمين أو يسار بناءً على match object
   const teamRight = match['Team-Right']?.Name || 'Team-2';
   const teamLeft = match['Team-Left']?.Name || 'Team-1';
+  const eventOrderMap = {
+    'بدأت المباراة': 0,
+    '0': 1,
+    '45': 2,
+    '45+': 3,
+    'نهاية الشوط الأول' :4,
+    'منتصف المباراة': 5,
+    '90': 6,
+    '90+': 7,
+    'نهاية الشوط الثاني': 8,  
+    'الشوط الإضافي الأول': 9,
+    '105':10,
+    '105+': 11,
+    'نهاية الشوط الإضافي الأول' : 12,
+    'الشوط الإضافي الثاني': 13,
+    '120': 14,
+    '120+': 15,
+    'نهاية الشوط الإضافي الثاني' : 16,
+    'إنتهت المباراة': 17
+  };
+  function cleanMinute(minute) {
+    if (!minute) return '';
+    return minute.replace(/[’']/g, '').trim();
+  }
+  function getEventOrder(event) {
+    if (eventOrderMap.hasOwnProperty(event.event_name)) {
+      return eventOrderMap[event.event_name];
+    }
+    const minute = cleanMinute(event.minute || event.Time || '');
+    if (eventOrderMap.hasOwnProperty(minute)) {
+      return eventOrderMap[minute];
+    }
+    if (minute.includes('+')) {
+      const base = minute.split('+')[0];
+      return eventOrderMap[`${base}+`] ?? parseInt(base, 10) + 0.5;
+    }
+    return parseInt(minute, 10) || 999;
+  }
+  const sortedEvents = [...events].sort((a, b) => getEventOrder(a) - getEventOrder(b));
 
   panel.innerHTML = `
     <div class="events-container">
@@ -497,22 +536,27 @@ function renderEvents(events, match) {
         const playerImage = event.player_a_image || '';
         const subPlayer = event.player_s || null;
         let extraPlayerHTML = '';
-        if (subPlayer) {
-          if (event.event_name === 'تبديل لاعب') {
-            extraPlayerHTML = `<div class="event-assist">خارج: ${playerName}</div>`;
-            playerName = subPlayer;
-          } else {
-            if (event.event_name === 'هدف') {
-              extraPlayerHTML = `<div class="event-assist">صناعة: ${subPlayer}</div>`;
+        let time = '';
+        if (eventOrderMap.hasOwnProperty(event.event_name)){
+          playerName='';
+          time = event.event_name;
+        }else{
+          if (subPlayer) {
+            if (event.event_name === 'تبديل لاعب') {
+              extraPlayerHTML = `<div class="event-assist">خارج: ${playerName}</div>`;
+              playerName = subPlayer;
             } else {
-              extraPlayerHTML = `<div class="event-assist">${subPlayer}</div>`;
+              if (event.event_name === 'هدف') {
+                extraPlayerHTML = `<div class="event-assist">صناعة: ${subPlayer}</div>`;
+              } else {
+                extraPlayerHTML = `<div class="event-assist">${subPlayer}</div>`;
+              }
             }
+          } else {
+            extraPlayerHTML = `<div class="event-assist">${event.event_name}</div>`;
           }
-        } else {
-          extraPlayerHTML = `<div class="event-assist">${event.event_name}</div>`;
+            time = cleanMinute(event.minute)|| '';
         }
-        
-        const time = event.Time || event.minute + `'` || '';
 
 return `
   <div class="event-item ${isLeft ? 'left' : 'right'}">
@@ -1190,6 +1234,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
