@@ -90,6 +90,15 @@ const cancelEditBtn = document.getElementById('cancel-edit-btn');
 const newsArticleView = document.getElementById('news-article-view');
 const newsArticleContent = document.getElementById('news-article-content');
 const backToNewsBtn = document.getElementById('backToNewsBtn');
+const desiredCupsOrder = [
+  'دوري أبطال أوروبا',
+  'الدوري الإنجليزي',
+  'الدوري الإسباني',
+  'الدوري المصري',
+  'كأس العالم',
+  'كأس الأمم الإفريقية'
+  // ... زوّد اللي انت عايزه
+];
 
 // --- RENDER & DISPLAY FUNCTIONS ---
 function displayMatches(matches) {
@@ -104,7 +113,15 @@ function displayMatches(matches) {
         }).matches.push(match);
         return acc;
     }, {});
-    matchesContainer.innerHTML = Object.values(matchesByCup).map(cupData => `
+  const matchesByCupArr = Object.values(matchesByCup);
+const normalizeName = name => name.trim().toLowerCase();
+const sortedCups = matchesByCupArr.sort((a, b) => {
+  const indexA = desiredCupsOrder.findIndex(n => normalizeName(n) === normalizeName(a.cupInfo['Cup-Name']));
+  const indexB = desiredCupsOrder.findIndex(n => normalizeName(n) === normalizeName(b.cupInfo['Cup-Name']));
+  return (indexA === -1 ? Infinity : indexA) - (indexB === -1 ? Infinity : indexB);
+});
+
+    matchesContainer.innerHTML = Object.values(sortedCups).map(cupData => `
         <div class="match-card bg-gray-200 dark:bg-gray-900">
             <div class="cup-header bg-gray-200 dark:bg-gray-900"><img src="${cupData.cupInfo['Cup-Logo']}" alt="" class="cup-logo"><h2 class="cup-name">${cupData.cupInfo['Cup-Name']}</h2></div>
             ${cupData.matches.map(match => {
@@ -399,13 +416,14 @@ function renderEvents(events, match) {
       <div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>
       ${events.map(event => {
         const isLeft = event.team === 'Team-1'; // ممكن تعدله لو عندك فريقين باسماء صريحة
-        const playerName = event.player_a || 'لاعب غير معروف';
+        let playerName = event.player_a || 'لاعب غير معروف';
         const playerImage = event.player_a_image || '';
         const subPlayer = event.player_s || null;
         let extraPlayerHTML = '';
         if (subPlayer) {
           if (event.event_name === 'تبديل لاعب') {
-            extraPlayerHTML = `<div class="event-assist">خارج: ${subPlayer}</div>`;
+            extraPlayerHTML = `<div class="event-assist">خارج: ${playerName}</div>`;
+            playerName = subPlayer;
           } else {
             if (event.event_name === 'هدف') {
               extraPlayerHTML = `<div class="event-assist">صناعة: ${subPlayer}</div>`;
@@ -877,13 +895,11 @@ matchesContainer.addEventListener('click', (e) => {
         const matchBody = e.target.closest('.match-body');
         if (matchBody) {
             const matchId = matchBody.dataset.matchId;
-            // فحص احتياطي
             if (!matchId) return;
           console.log("Matches loaded:", allMatchesData.length);
 console.log(allMatchesData.map(m => m['Match-id']));
 console.log("Clicked Match ID:", matchId);
             const matchData = allMatchesData.find(m => {
-                // نعمل تطابق آمن، سواء كان رقم أو نص
                 return String(m['Match-id']) === String(matchId);
             });
 
@@ -1096,6 +1112,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
