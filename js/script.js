@@ -491,7 +491,45 @@ function cleanMinute(minute) {
   if (!minute) return '';
   return minute.replace(/[’']/g, '').trim();
 }
+function renderPenaltyShootout(match) {
+  const shootout = match['Penalty_Shootout'];
+  if (!shootout) return '';
 
+  const kicks1 = shootout.Team1_Kicks || [];
+  const kicks2 = shootout.Team2_Kicks || [];
+  const maxKicks = Math.max(kicks1.length, kicks2.length);
+
+  let rows = '';
+  for (let i = 0; i < maxKicks; i++) {
+    const k1 = kicks1[i] || {};
+    const k2 = kicks2[i] || {};
+
+    rows += `
+      <div class="penalty-row flex items-center justify-between py-1">
+        <div class="team1 flex-1 text-right">
+          ${k1.player_name || ''} 
+          <span class="${k1.outcome === 'Scored' ? 'text-green-500' : 'text-red-500'}">
+            ${k1.outcome === 'Scored' ? '✔' : (k1.outcome ? '✘' : '')}
+          </span>
+        </div>
+        <div class="kick-number w-10 text-center">${i + 1}</div>
+        <div class="team2 flex-1 text-left">
+          <span class="${k2.outcome === 'Scored' ? 'text-green-500' : 'text-red-500'}">
+            ${k2.outcome === 'Scored' ? '✔' : (k2.outcome ? '✘' : '')}
+          </span>
+          ${k2.player_name || ''}
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="penalty-shootout bg-gray-100 dark:bg-gray-800 mt-4 p-2 rounded">
+      <h3 class="text-center font-bold mb-2">ركلات الترجيح</h3>
+      ${rows}
+    </div>
+  `;
+}
 function getEventOrder(event) {
   const minute = cleanMinute(event.minute || event.Time || '');
 
@@ -531,52 +569,13 @@ const eventOrderMap = {
   'نهاية الشوط الإضافي الثاني': 1202,
   'إنتهت المباراة': 2000
 };
-function renderPenaltyShootout(match) {
-  const shootout = match.Penalty_Shootout;
-  console.log(shootout);
-  if (!shootout) return '';
-
-  const kicks1 = shootout.Team1_Kicks || [];
-  const kicks2 = shootout.Team2_Kicks || [];
-  const maxKicks = Math.max(kicks1.length, kicks2.length);
-
-  let rows = '';
-  for (let i = 0; i < maxKicks; i++) {
-    const k1 = kicks1[i] || {};
-    const k2 = kicks2[i] || {};
-
-    rows += `
-      <div class="penalty-row flex items-center justify-between py-1">
-        <div class="team1 flex-1 text-right">
-          ${k1.player_name || ''} 
-          <span class="${k1.outcome === 'Scored' ? 'text-green-500' : 'text-red-500'}">
-            ${k1.outcome === 'Scored' ? '✔' : (k1.outcome ? '✘' : '')}
-          </span>
-        </div>
-        <div class="kick-number w-10 text-center">${i + 1}</div>
-        <div class="team2 flex-1 text-left">
-          <span class="${k2.outcome === 'Scored' ? 'text-green-500' : 'text-red-500'}">
-            ${k2.outcome === 'Scored' ? '✔' : (k2.outcome ? '✘' : '')}
-          </span>
-          ${k2.player_name || ''}
-        </div>
-      </div>
-    `;
-  }
-
-  return `
-    <div class="penalty-shootout bg-gray-100 dark:bg-gray-800 mt-4 p-2 rounded">
-      <h3 class="text-center font-bold mb-2">ركلات الترجيح</h3>
-      ${rows}
-    </div>
-  `;
-}
 // ترتيب الأحداث
 const sortedEvents = [...events]
   .sort((a, b) => getEventOrder(a) - getEventOrder(b))
   .reverse(); // الأحدث أولاً
 
 const penaltyBlock = renderPenaltyShootout(match);
+  console.log(penaltyBlock);
 
   panel.innerHTML = `
     <div class="events-container">
@@ -1287,6 +1286,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
