@@ -533,6 +533,7 @@ const eventOrderMap = {
 };
 function renderPenaltyShootout(match) {
   const shootout = match.Penalty_Shootout;
+  console.log(shootout);
   if (!shootout) return '';
 
   const kicks1 = shootout.Team1_Kicks || [];
@@ -570,12 +571,12 @@ function renderPenaltyShootout(match) {
     </div>
   `;
 }
-const penaltyBlock = renderPenaltyShootout(match);
 // ترتيب الأحداث
 const sortedEvents = [...events]
   .sort((a, b) => getEventOrder(a) - getEventOrder(b))
   .reverse(); // الأحدث أولاً
 
+const penaltyBlock = renderPenaltyShootout(match);
 
   panel.innerHTML = `
     <div class="events-container">
@@ -1286,6 +1287,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
