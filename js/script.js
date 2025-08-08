@@ -8,7 +8,7 @@ function loadAllData() {
   setTimeout(() => fetchNews(), 1500);
 }
 function getUserTimeZoneOffset() {
-    const offsetMinutes = new Date().getTimezoneOffset(); 
+    const offsetMinutes = new Date().getTimezoneOffset(); &t
     const absMinutes = Math.abs(offsetMinutes);
     const hours = String(Math.floor(absMinutes / 60)).padStart(2, '0');
     const minutes = String(absMinutes % 60).padStart(2, '0');
@@ -231,8 +231,12 @@ const sortedCups = matchesByCupArr.sort((a, b) => {
                   });
                 }
                 detailsContent = `<div class="match-time">${localTimeString}</div>`;
-              } else {
-                detailsContent = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
+              } else { 
+                if (match['Match-Status'] === 'إنتهت المباراة (ركلات الترجيح)') {
+                  detailsContent = `<div class="match-result">(${match['Team-Left']['Penalty-Score']}) ${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']} (${match['Team-Right']['Penalty-Score']})</div>`;
+                } else {
+                  detailsContent = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
+                }
               }
                 let statusClass = 'status-not-started';
                 if (match['Match-Status'] === 'إنتهت المباراة') statusClass = 'status-finished';
@@ -758,7 +762,7 @@ async function fetchEventsAndLineup(match) {
     document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
   });
 
-  const apiUrl = `https://ko.best-goal.live/state.php?match_id=${match['Match-id']}&time=${userTimeZone}`;
+  const apiUrl = `https://ko.best-goal.live/state.php?match_id=${match['Match-id']}`;
 
   try {
 const response = await fetch(apiUrl);
@@ -1196,6 +1200,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
