@@ -530,7 +530,7 @@ function renderEvents(events, match) {
   panel.innerHTML = `
     <div class="events-container">
       <div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>
-      ${events.map(event => {
+      ${sortedEvents.map(event => {
         const isLeft = event.team === 'Team-1'; // ممكن تعدله لو عندك فريقين باسماء صريحة
         let playerName = event.player_a || 'لاعب غير معروف';
         const playerImage = event.player_a_image || '';
@@ -1234,6 +1234,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
