@@ -242,9 +242,12 @@ function createMatchCard(match) {
       } else {
         console.warn("❌ Invalid Date:", fullDateTime);
       }
-    matchTimeOrResult = `<div class="match-time">${localTimeString}</div>`;
-  } else {
-    matchTimeOrResult = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
+      console.warn("not start:", isNotStarted);
+      matchTimeOrResult = `<div class="match-time">${localTimeString}</div>`;
+    } else {
+      console.warn("not start:", isNotStarted);
+      matchTimeOrResult = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
+    }
   }
 
   const div = document.createElement("div");
