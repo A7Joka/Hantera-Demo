@@ -575,7 +575,8 @@ const sortedEvents = [...events]
   .reverse(); // الأحدث أولاً
 
 const penaltyBlock = renderPenaltyShootout(match);
-  console.log(penaltyBlock);
+console.log('Penalty Shootout Object:', match['Penalty_Shootout']);
+console.log('Penalty Block:', penaltyBlock);
 
   panel.innerHTML = `
     <div class="events-container">
@@ -1286,6 +1287,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
