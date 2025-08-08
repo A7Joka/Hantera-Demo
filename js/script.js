@@ -224,8 +224,8 @@ const sortedCups = matchesByCupArr.sort((a, b) => {
                 detailsContent = `<div class="match-time">${localTimeString}</div>`;
               } else { 
                   detailsContent = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
-                }
               }
+              
                 let statusClass = 'status-not-started';
                 if (match['Match-Status'] === 'إنتهت المباراة') statusClass = 'status-finished';
                 else if (match['Match-Status'] === 'المباراة تأجلت' || match['Match-Status'] === 'المباراة الغيت') statusClass = 'status-postponed';
@@ -1289,6 +1289,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
