@@ -9,7 +9,6 @@ import {
   showMatchDetailsPage,
   displayStandings,
   showNewsArticle,
-  getUserTimeZoneOffset
 } from './script.js';
 let alllMatchesData = [];
 let alllNewsData = [];
@@ -19,7 +18,6 @@ const htrls = document.getElementById('home-transfers-loading-spinner');
 const hnels = document.getElementById('home-news-loading-spinner');
 const hvils = document.getElementById('home-videos-loading-spinner');
 const htols = document.getElementById('home-tournaments-loading-spinner');
-const userTimeZone = getUserTimeZoneOffset();
 // 1. تحميل المباريات
 async function loadMatches() {
       hmals.style.display = 'flex';
@@ -238,8 +236,13 @@ function createMatchCard(match) {
         minute: '2-digit',
         hour12: true
       });
+      console.log("Matches Error:",isNotStarted);
+      console.log("Matches Error:", match['Match-id']);      
       matchTimeOrResult = `<div class="match-time">${localTimeString}</div>`;
     } else {
+      console.log("Matches Error:", match['Team-Left']['Goal']);
+      console.log("Matches Error:", match['Team-Right']['Goal']);
+      console.log("Matches Error:", match['Match-id']);
       matchTimeOrResult = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
     }
   }
