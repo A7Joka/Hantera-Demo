@@ -223,9 +223,6 @@ const sortedCups = matchesByCupArr.sort((a, b) => {
                 }
                 detailsContent = `<div class="match-time">${localTimeString}</div>`;
               } else { 
-                if (match['Match-Status'] === 'إنتهت المباراة (ركلات الترجيح)') {
-                  detailsContent = `<div class="match-result">(${match['Team-Left']['Penalty-Score']}) ${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']} (${match['Team-Right']['Penalty-Score']})</div>`;
-                } else {
                   detailsContent = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
                 }
               }
@@ -509,13 +506,13 @@ function renderPenaltyShootout(penalty) {
         <div class="team1 flex-1 text-right">
           ${k1.player_name || ''} 
           <span class="${k1.outcome === 'Scored' ? 'text-green-500' : 'text-red-500'}">
-            ${k1.outcome === 'Scored' ? '✔' : (k1.outcome ? '✘' : '')}
+            ${k1.outcome === 'Scored' ? ' (هدف) ' : (k1.outcome ? ' (ضائعة) ' : '')}
           </span>
         </div>
-        <div class="kick-number w-10 text-center">${i + 1}</div>
+        <div class="event-time bg-gray-200 dark:bg-gray-900">${i + 1}</div>
         <div class="team2 flex-1 text-left">
           <span class="${k2.outcome === 'Scored' ? 'text-green-500' : 'text-red-500'}">
-            ${k2.outcome === 'Scored' ? '✔' : (k2.outcome ? '✘' : '')}
+            ${k2.outcome === 'Scored' ? ' (هدف) ' : (k2.outcome ? ' (ضائعة) ' : '')}
           </span>
           ${k2.player_name || ''}
         </div>
@@ -525,7 +522,8 @@ function renderPenaltyShootout(penalty) {
 
   return `
     <div class="penalty-shootout bg-gray-100 dark:bg-gray-800 mt-4 p-2 rounded">
-      <h3 class="text-center font-bold mb-2">ركلات الترجيح</h3>
+      <div class="event-time bg-gray-200 dark:bg-gray-900">ركلات الترجيح</div>
+      <br>
       ${rows}
     </div>
   `;
@@ -609,7 +607,7 @@ console.log('Penalty Block:', penaltyBlock);
           }
             time = cleanMinute(event.minute)|| '';
         }
-        return `
+         let html =  `
         <div class="event-item ${isLeft ? 'left' : 'right'}">
         ${!isLeft ? '<div style="width:45%"></div>' : ''}
         <div class="event-details">
@@ -623,8 +621,11 @@ console.log('Penalty Block:', penaltyBlock);
         ${isLeft ? '<div style="width:45%"></div>' : ''}
         </div>
         `;
+        if (event.event_name === 'إنتهت المباراة' && penaltyBlock) {
+          html += penaltyBlock;
+        }
+        return html;
       }).join('')}
-      ${penaltyBlock}
       </div>`;
 }
 
@@ -1288,6 +1289,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
