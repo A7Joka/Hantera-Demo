@@ -487,45 +487,56 @@ function renderEvents(events, match) {
   // لتحديد الفريق يمين أو يسار بناءً على match object
   const teamRight = match['Team-Right']?.Name || 'Team-2';
   const teamLeft = match['Team-Left']?.Name || 'Team-1';
-  const eventOrderMap = {
-    'بدأت المباراة': 0,
-    '0': 1,
-    '45': 2,
-    '45+': 3,
-    'نهاية الشوط الأول' :4,
-    'منتصف المباراة': 5,
-    '90': 6,
-    '90+': 7,
-    'نهاية الشوط الثاني': 8,  
-    'الشوط الإضافي الأول': 9,
-    '105':10,
-    '105+': 11,
-    'نهاية الشوط الإضافي الأول' : 12,
-    'الشوط الإضافي الثاني': 13,
-    '120': 14,
-    '120+': 15,
-    'نهاية الشوط الإضافي الثاني' : 16,
-    'إنتهت المباراة': 17
-  };
-  function cleanMinute(minute) {
-    if (!minute) return '';
-    return minute.replace(/[’']/g, '').trim();
+function cleanMinute(minute) {
+  if (!minute) return '';
+  return minute.replace(/[’']/g, '').trim();
+}
+
+function getEventOrder(event) {
+  const minute = cleanMinute(event.minute || event.Time || '');
+
+  // أحداث خاصة من الخريطة
+  if (eventOrderMap[event.event_name] !== undefined) {
+    return eventOrderMap[event.event_name];
   }
-  function getEventOrder(event) {
-    if (eventOrderMap.hasOwnProperty(event.event_name)) {
-      return eventOrderMap[event.event_name];
-    }
-    const minute = cleanMinute(event.minute || event.Time || '');
-    if (eventOrderMap.hasOwnProperty(minute)) {
-      return eventOrderMap[minute];
-    }
-    if (minute.includes('+')) {
-      const base = minute.split('+')[0];
-      return eventOrderMap[`${base}+`] ?? parseInt(base, 10) + 0.5;
-    }
-    return parseInt(minute, 10) || 999;
+
+  // وقت إضافي
+  if (minute.includes('+')) {
+    const [base, extra] = minute.split('+').map(n => parseInt(n, 10) || 0);
+    return (base * 10) + extra / 100; // مثال: 45+2 = 450.02
   }
-  const sortedEvents = [...events].sort((a, b) => getEventOrder(a) - getEventOrder(b));
+
+  // دقائق عادية
+  const num = parseInt(minute, 10);
+  return isNaN(num) ? 999 : num * 10; // 63 = 630
+}
+
+const eventOrderMap = {
+  'بدأت المباراة': 0,
+  '0': 10,
+  '45': 450,
+  '45+': 451,
+  'نهاية الشوط الأول': 452,
+  'منتصف المباراة': 453,
+  '90': 900,
+  '90+': 901,
+  'نهاية الشوط الثاني': 902,
+  'الشوط الإضافي الأول': 903,
+  '105': 1050,
+  '105+': 1051,
+  'نهاية الشوط الإضافي الأول': 1052,
+  'الشوط الإضافي الثاني': 1053,
+  '120': 1200,
+  '120+': 1201,
+  'نهاية الشوط الإضافي الثاني': 1202,
+  'إنتهت المباراة': 2000
+};
+
+// ترتيب الأحداث
+const sortedEvents = [...events]
+  .sort((a, b) => getEventOrder(a) - getEventOrder(b))
+  .reverse(); // الأحدث أولاً
+
 
   panel.innerHTML = `
     <div class="events-container">
@@ -1234,6 +1245,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
