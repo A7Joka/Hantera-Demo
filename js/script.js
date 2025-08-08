@@ -116,7 +116,7 @@ function displayMatches(matches) {
                 return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
               }
               let detailsContent;
-              if (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت') {
+              if (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'المباراة تأجلت' || match['Match-Status'] === 'المباراة الغيت') {
                 const matchTimeStr = match['Match-Start-Time'];
                 const matchDateStr = match['match_date_time'];
                 let localTimeString = '—';
@@ -136,8 +136,8 @@ function displayMatches(matches) {
                 detailsContent = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
               }
                 let statusClass = 'status-not-started';
-                if (match['Match-Status'] === 'انتهت' || match['Match-Status'] === 'بعد الوقت الإضافي' || match['Match-Status'] === 'بعد ركلات الترجيح' || match['Match-Status'] === 'انتهت للتو' ) statusClass = 'status-finished';
-                else if (match['Match-Status'] === 'تأجلت') statusClass = 'status-postponed';
+                if (match['Match-Status'] === 'إنتهت المباراة') statusClass = 'status-finished';
+                else if (match['Match-Status'] === 'المباراة تأجلت' || match['Match-Status'] === 'المباراة الغيت') statusClass = 'status-postponed';
                 else if (match['Match-Status'] !== 'لم تبدأ') statusClass = 'status-live';
                 return `  <div class="match-body bg-gray-200 dark:bg-gray-900 mb-1 mt-1" data-match-id="${match['Match-id']}">
     <div class="match-part part-logo bg-gray-100 dark:bg-gray-700">
@@ -161,15 +161,12 @@ function displayMatches(matches) {
         </div>`).join('');
 }
 function createMatchCard(match) {
-  const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت';
-  const statusClass = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
-    : match['Match-Status'] === 'انتهت' ? 'status-finished'
-      : match['Match-Status'] === 'بعد الوقت الإضافي' ? 'status-finished'
-        : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
-          : match['Match-Status'] === 'تأجلت' ? 'status-postponed'
-            : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
-              : 'status-live';
-
+  const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'المباراة تأجلت' || match['Match-Status'] === 'المباراة الغيت';
+  const statusClass = match['Match-Status'] === 'إنتهت المباراة' ? 'status-finished'
+    : match['Match-Status'] === 'المباراة تأجلت' ? 'status-postponed'
+    : match['Match-Status'] === 'المباراة الغيت' ? 'status-postponed'
+    : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
+    : 'status-live';
   const matchTimeOrResult = isNotStarted
     ? `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>`
     : `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
@@ -672,13 +669,11 @@ const data = await response.json();
   throw new Error("Missing Match_Info");
 }
 
-    const matchStatus = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
-      : match['Match-Status'] === 'انتهت' ? 'status-finished'
-        : match['Match-Status'] === 'بعد الوقت الإضافي' ? 'status-finished'
-          : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
-            : match['Match-Status'] === 'تأجلت' ? 'status-postponed'
-              : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
-                : 'status-live';
+    const matchStatus = match['Match-Status'] === 'إنتهت المباراة' ? 'status-finished'
+    : match['Match-Status'] === 'المباراة تأجلت' ? 'status-postponed'
+    : match['Match-Status'] === 'المباراة الغيت' ? 'status-postponed'
+    : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
+    : 'status-live';
     
         const startTime = new Date(match['Time-Start']);
     const now = new Date();
@@ -794,13 +789,11 @@ async function openAdminModal(matchId) {
 // --- UI LOGIC & EVENT LISTENERS ---
 
 function showMatchDetailsPage(match) {
-  const matchStatus = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
-    : match['Match-Status'] === 'انتهت' ? 'status-finished'
-      : match['Match-Status'] === 'بعد الوقت الإضافي' ? 'status-finished'
-        : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
-          : match['Match-Status'] === 'تأجلت' ? 'status-postponed'
-            : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
-              : 'status-live';
+  const matchStatus = match['Match-Status'] === 'إنتهت المباراة' ? 'status-finished'
+    : match['Match-Status'] === 'المباراة تأجلت' ? 'status-postponed'
+    : match['Match-Status'] === 'المباراة الغيت' ? 'status-postponed'
+    : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
+    : 'status-live';
   if (matchStatus === 'status-not-started' || matchStatus === 'status-postponed'){
     modalMatchCard.innerHTML = `<div class="modal-team"><img src=" ${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">VS</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src=" ${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
   } else {
@@ -1104,6 +1097,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
