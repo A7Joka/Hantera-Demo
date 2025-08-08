@@ -503,27 +503,27 @@ function renderPenaltyShootout(penalty) {
 
     rows += `
       <div class="penalty-row flex items-center justify-between py-1">
-        <div class="team1 flex-1 text-right">
-          ${k1.player_name || ''} 
+        <div class="team1 flex-1 pl-12 text-left">
           <span class="${k1.outcome === 'Scored' ? 'text-green-500' : 'text-red-500'}">
             ${k1.outcome === 'Scored' ? ' (هدف) ' : (k1.outcome ? ' (ضائعة) ' : '')}
           </span>
+          ${k1.player_name || ''} 
         </div>
-        <div class="event-time bg-gray-200 dark:bg-gray-900">${i + 1}</div>
-        <div class="team2 flex-1 text-left">
+        <div class="event-time bg-gray-100 dark:bg-gray-800">${i + 1}</div>
+        <div class="team2 flex-1 pr-12 text-right">
+          ${k2.player_name || ''}
           <span class="${k2.outcome === 'Scored' ? 'text-green-500' : 'text-red-500'}">
             ${k2.outcome === 'Scored' ? ' (هدف) ' : (k2.outcome ? ' (ضائعة) ' : '')}
           </span>
-          ${k2.player_name || ''}
         </div>
       </div>
     `;
   }
 
   return `
-    <div class="penalty-shootout bg-gray-100 dark:bg-gray-800 mt-4 p-2 rounded">
-      <div class="event-time bg-gray-200 dark:bg-gray-900">ركلات الترجيح</div>
-      <br>
+    <div class="penalty-shootout bg-gray-200 dark:bg-gray-900 mt-4 p-2 rounded-xl">
+      <div class="event-time bg-gray-100 dark:bg-gray-800">ركلات الترجيح</div>
+      <br><br>
       ${rows}
     </div>
   `;
@@ -565,7 +565,8 @@ const eventOrderMap = {
   '120': 1200,
   '120+': 1201,
   'نهاية الشوط الإضافي الثاني': 1202,
-  'إنتهت المباراة': 2000
+  'ركلات الترجيح': 2000,
+  'إنتهت المباراة': 2001
 };
 // ترتيب الأحداث
 const sortedEvents = [...events]
@@ -1289,6 +1290,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
