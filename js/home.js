@@ -207,7 +207,8 @@ tournaments.forEach((tournament, index) => {
 
 // ---------- الكروت ----------
 function createMatchCard(match) {
-  const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'المباراة تأجلت';
+  const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'المباراة تأجلت' || match['Match-Status'] === 'المباراة الغيت';
+  console.log(JSON.stringify(match['Match-Status']));
   const statusClass = match['Match-Status'] === 'إنتهت المباراة' ? 'status-finished'
     : match['Match-Status'] === 'المباراة تأجلت' ? 'status-postponed'
     : match['Match-Status'] === 'المباراة الغيت' ? 'status-postponed'
@@ -238,11 +239,9 @@ function createMatchCard(match) {
       });
       console.log("Matches Error:",isNotStarted);
       console.log("Matches Error:", match['Match-id']);      
+      console.log("Matches Error:", match['Match-Status']);      
       matchTimeOrResult = `<div class="match-time">${localTimeString}</div>`;
     } else {
-      console.log("Matches Error:", match['Team-Left']['Goal']);
-      console.log("Matches Error:", match['Team-Right']['Goal']);
-      console.log("Matches Error:", match['Match-id']);
       matchTimeOrResult = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
     }
   }
