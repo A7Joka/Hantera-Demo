@@ -210,17 +210,39 @@ tournaments.forEach((tournament, index) => {
 // ---------- الكروت ----------
 function createMatchCard(match) {
   const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت';
-  const statusClass = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
-    : match['Match-Status'] === 'انتهت' ? 'status-finished'
-      : match['Match-Status'] === 'بعد الوقت الاضافي' ? 'status-finished'
-        : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
-          : match['Match-Status'] === 'تأجلت' ? 'status-postponed'
-            : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
-              : 'status-live';
-
-  const matchTimeOrResult = isNotStarted
-    ? `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>`
-    : `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
+  const statusClass = match['Match-Status'] === 'إنتهت المباراة' ? 'status-finished'
+    : match['Match-Status'] === 'المباراة تأجلت' ? 'status-postponed'
+    : match['Match-Status'] === 'المباراة الغيت' ? 'status-postponed'
+    : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
+    : 'status-live';
+  
+  function convertTo24Hour(timeStr) {
+    const [time, modifier] = timeStr.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
+    if (modifier === 'م' && hours < 12) hours += 12;
+    if (modifier === 'ص' && hours === 12) hours = 0;
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+ }
+let matchTimeOrResult;
+if (isNotStarted) {
+  const matchTimeStr = match['Match-Start-Time'];
+  const matchDateStr = match['match_date_time'];
+  let localTimeString = '—';
+  if (matchTimeStr && matchDateStr) {
+    const datePart = matchDateStr.split(' ')[0];
+    const timePart = convertTo24Hour(matchTimeStr);
+    const fullDateTime = `${datePart}T${timePart}:00+02:00`;
+    const localTime = new Date(fullDateTime);
+    localTimeString = localTime.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
+  matchTimeOrResult = `<div class="match-time">${localTimeString}</div>`;
+} else {
+  matchTimeOrResult = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
+}
 
   const div = document.createElement("div");
   div.className = "match-card";
