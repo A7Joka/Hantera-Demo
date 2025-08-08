@@ -25,7 +25,7 @@ async function loadMatches() {
       hmals.style.display = 'flex';
 const container = document.getElementById("home-matches-container");
   try {
-    const res = await fetch(`https://ko.best-goal.live/state.php?date=today`);
+    const res = await fetch(`https://ko.best-goal.live/state.php`);
     const json = await res.json();
     const allMatches = json.Leagues.flatMap(league => league.Matches || []);
     const matches = allMatches.slice(0, 5);
@@ -232,20 +232,14 @@ function createMatchCard(match) {
       const datePart = matchDateStr.split(' ')[0];
       const timePart = convertTo24Hour(matchTimeStr);
       const fullDateTime = `${datePart}T${timePart}:00+02:00`;
-      const localTime = new Date(fullDateTime);
-      if (!isNaN(localTime)) {
-        localTimeString = localTime.toLocaleTimeString([], {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true
-        });
-      } else {
-        console.warn("❌ Invalid Date:", fullDateTime);
-      }
-      console.warn("not start:", isNotStarted);
+      const localTime = new Date(fullDateTime);      
+      localTimeString = localTime.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
       matchTimeOrResult = `<div class="match-time">${localTimeString}</div>`;
     } else {
-      console.warn("not start:", isNotStarted);
       matchTimeOrResult = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
     }
   }
