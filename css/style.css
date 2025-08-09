@@ -369,7 +369,9 @@ header ul li a.active {
 }
 
 .transfer-player-position {
-    color: #666;;;
+    color: #666;
+    ;
+    ;
     font-size: 0.7rem;
 }
 
@@ -409,7 +411,9 @@ header ul li a.active {
 
 .transfer-arrow {
     font-size: 1.8rem;
-    color: #666;;;
+    color: #666;
+    ;
+    ;
     font-weight: bold;
 }
 
@@ -417,7 +421,8 @@ header ul li a.active {
     width: 100%;
     text-align: center;
     font-size: 0.7rem;
-    color: #666;;
+    color: #666;
+    ;
     border-top: 1px solid #e8e8e8;
     padding-top: 10px;
     margin-top: 10px;
@@ -656,12 +661,14 @@ header ul li a.active {
     font-weight: 600;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    width: 24%;
+    width: 14%;
     transition: var(--transition);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-.modal-close-btn:hover{
+
+.modal-close-btn:hover {
     transform: translateY(-3px);
 }
 
@@ -759,7 +766,8 @@ header ul li a.active {
     text-align: center;
     font-weight: 700;
     font-size: 0.95rem;
-    color: #666;;
+    color: #666;
+    ;
 }
 
 .stat-name {
@@ -817,7 +825,8 @@ header ul li a.active {
 
 .lineup-formation {
     font-size: 0.9rem;
-    color: #666;;
+    color: #666;
+    ;
 }
 
 .lineup-section-title {
@@ -885,7 +894,8 @@ header ul li a.active {
 
 .event-assist {
     font-size: 0.8rem;
-    color: #666;;
+    color: #666;
+    ;
 }
 
 .event-icon {
@@ -898,6 +908,7 @@ header ul li a.active {
     align-items: center;
     justify-content: center;
 }
+
 .event-icon svg {
     max-width: 100%;
     max-height: 100%;
@@ -936,7 +947,8 @@ header ul li a.active {
 
 .info-label {
     font-weight: 700;
-    color: #666;;
+    color: #666;
+    ;
 }
 
 .info-value {
@@ -1014,7 +1026,8 @@ header ul li a.active {
 }
 
 #cancel-edit-btn {
-    background-color: #666;;
+    background-color: #666;
+    ;
 }
 
 #admin-login-btn {
@@ -1122,7 +1135,7 @@ header ul li a.active {
 }
 
 .tabs-drawer .tab-btn[data-action="back"] {
-    
+
     font-weight: 700;
 }
 
@@ -1192,12 +1205,19 @@ header ul li a.active {
 }
 
 @media (max-width: 500px) {
-    .cup-name{
+    .modal-close-btn {
+        font-size: 0.6rem;
+        width: 20%;
+    }
+
+    .cup-name {
         font-size: 0.7rem;
     }
-    #formattedDate{
+
+    #formattedDate {
         font-size: 0.6rem;
     }
+
     .match-part {
         padding: 8px;
         height: 100%;
@@ -1356,10 +1376,3 @@ header ul li a.active {
         font-size: 1.5rem;
     }
 }
-
-
-
-
-
-
-
