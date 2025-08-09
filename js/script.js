@@ -360,9 +360,9 @@ let penInfo;
     panel.innerHTML = "<p style='text-align:center;'>التفاصيل غير متاحة.</p>";
     return;
   }
-  consol.log('stat',match['Match-Status']);
+  console.log('stat',match['Match-Status']);
 if (match['Match-Status'] === 'إنتهت المباراة - ركلات الترجيح') {
-  consol.log('match',match);
+  console.log('match',match);
     const rightTeam = match['Team-Right'];
     const leftTeam = match['Team-Left'];
 
@@ -1321,6 +1321,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
