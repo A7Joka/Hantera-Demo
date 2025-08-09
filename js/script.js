@@ -483,13 +483,13 @@ const panel = document.getElementById('tab-lineup');
     <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
     
     ${p.rating !== null ? `
-      <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 px-1.5 py-0.5 rounded text-xs font-bold text-white"
+      <span class="absolute bottom-[-2px] right-[-10px] w-[22px] h-[13px] rounded-[20px] flex items-center justify-center text-white text-[10px]"
         style="background-color: ${p.rating >= 7 ? '#16a34a' : (p.rating >= 5 ? '#facc15' : '#dc2626')};">
         ${p.rating}
       </span>
     ` : ''}
   </div>
-  <span class="player-name text-sm text-gray-800 dark:text-gray-100" title="${p.player.player_number ? p.player.player_number + ' - ' : ''}${p.player.position || ''}">
+  <span class="player-name text-sm text-gray-800 dark:text-gray-100" title="#${p.player.player_number ? p.player.player_number + ' - ' : ''}${p.player.position || ''}">
     ${p.player.title}
   </span>
 </li>`).join('')}
@@ -501,9 +501,20 @@ const panel = document.getElementById('tab-lineup');
         <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${substitutes.map(p => `
             <li class="player-item flex items-center gap-2">
-              <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-              <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
-            </li>`).join('')}
+  <div class="relative">
+    <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
+    
+    ${p.rating !== null ? `
+      <span class="absolute bottom-[-2px] right-[-10px] w-[22px] h-[13px] rounded-[20px] flex items-center justify-center text-white text-[10px]"
+        style="background-color: ${p.rating >= 7 ? '#16a34a' : (p.rating >= 5 ? '#facc15' : '#dc2626')};">
+        ${p.rating}
+      </span>
+    ` : ''}
+  </div>
+  <span class="player-name text-sm text-gray-800 dark:text-gray-100" title="#${p.player.player_number ? p.player.player_number + ' - ' : ''}${p.player.position || ''}">
+    ${p.player.title}
+  </span>
+</li>`).join('')}
         </ul>
         </div>
       </div>
@@ -1334,6 +1345,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
