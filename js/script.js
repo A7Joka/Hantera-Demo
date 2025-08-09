@@ -360,7 +360,9 @@ let penInfo;
     panel.innerHTML = "<p style='text-align:center;'>التفاصيل غير متاحة.</p>";
     return;
   }
+  consol.log('stat',match['Match-Status']);
 if (match['Match-Status'] === 'إنتهت المباراة - ركلات الترجيح') {
+  consol.log('match',match);
     const rightTeam = match['Team-Right'];
     const leftTeam = match['Team-Left'];
 
@@ -374,7 +376,6 @@ if (match['Match-Status'] === 'إنتهت المباراة - ركلات التر
     }
 
     let penResult = `${leftTeam['Penalty-Score']} - ${rightTeam['Penalty-Score']}`;
-  if(!(winner === 'لم يُحسم')){
     penInfo = `
     <div class="info-item w-max">
         <span class="info-label text-gray-800 dark:text-gray-100">
@@ -382,6 +383,7 @@ if (match['Match-Status'] === 'إنتهت المباراة - ركلات التر
         </span>
     </div>
     `;
+  console.log('pen',penInfo)
   }
 }
 
@@ -1316,6 +1318,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
