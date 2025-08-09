@@ -353,18 +353,16 @@ function displayTransfers(transfers) {
     }).join('');
 }
 
-function renderInfo(info,details, match) {
+function renderInfo(info, match) {
 let penInfo='';
   const panel = document.getElementById('tab-info');
   if (!info || !match) {
     panel.innerHTML = "<p style='text-align:center;'>التفاصيل غير متاحة.</p>";
     return;
   }
-  console.log('stat',details['Match-Status']);
-if (details['Match-Status'] === 'إنتهت المباراة - ركلات الترجيح') {
-  console.log('match',details);
-    const rightTeam = details['Team-Right'];
-    const leftTeam = details['Team-Left'];
+if (match['Match-Status'] === 'إنتهت المباراة - ركلات الترجيح') {
+    const rightTeam = match['Team-Right'];
+    const leftTeam = match['Team-Left'];
 
     let winner = '';
     if (rightTeam['Penalty-Score'] > leftTeam['Penalty-Score']) {
@@ -480,10 +478,21 @@ const panel = document.getElementById('tab-lineup');
                  <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">التشكيلة الأساسية</div>
         <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${starters.map(p => `
-            <li class="player-item flex items-center gap-2">
-              <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-              <span class="player-name text-sm text-gray-800 dark:text-gray-100">${p.player.title}</span>
-            </li>`).join('')}
+          <li class="player-item flex items-center gap-2">
+  <div class="relative">
+    <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
+    
+    ${p.rating !== null ? `
+      <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 px-1.5 py-0.5 rounded text-xs font-bold text-white"
+        style="background-color: ${p.rating >= 7 ? '#16a34a' : (p.rating >= 5 ? '#facc15' : '#dc2626')};">
+        ${p.rating}
+      </span>
+    ` : ''}
+  </div>
+  <span class="player-name text-sm text-gray-800 dark:text-gray-100" title="${p.player.player_number ? p.player.player_number + ' - ' : ''}${p.player.position || ''}">
+    ${p.player.title}
+  </span>
+</li>`).join('')}
         </ul>
       </div>
 
@@ -508,7 +517,7 @@ const panel = document.getElementById('tab-lineup');
     </div>
   `;
 }
-function renderEvents(events, penalty, match) {
+function renderEvents(events, match) {
   const panel = document.getElementById('tab-events');
   if (!events || events.length === 0) {
     panel.innerHTML = "<p style='text-align:center;'>لا توجد أحداث مسجلة.</p>";
@@ -522,6 +531,7 @@ function cleanMinute(minute) {
   if (!minute) return '';
   return minute.replace(/[’']/g, '').trim();
 }
+  let penalty = match['Penalty_Shootout'];
 function renderPenaltyShootout(penalty) {
   const shootout = penalty;
   if (!shootout) return '';
@@ -915,9 +925,9 @@ const data = await response.json();
     if (shouldFetchStreams) {
       await fetchAndDisplayStreams(match);
         }
-    renderInfo(details['Match_Info'],details, match);
+    renderInfo(details['Match_Info'],details);
     renderLineup(details['Lineup'], match);
-    renderEvents(details['Events'], details['Penalty_Shootout'], match);
+    renderEvents(details['Events'], details);
 
   } catch (e) {
     console.error("Fetch Details Error:", e);
@@ -1324,6 +1334,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
