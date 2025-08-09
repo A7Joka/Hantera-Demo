@@ -478,7 +478,7 @@ const panel = document.getElementById('tab-lineup');
                  <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">التشكيلة الأساسية</div>
         <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${starters.map(p => `
-          <li class="player-item flex items-center gap-2">
+          <li class="player-item flex items-center gap-2 cursor-pointer">
   <div class="relative">
     <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
     
@@ -500,7 +500,7 @@ const panel = document.getElementById('tab-lineup');
         <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mt-4 mb-2">الاحتياطي</div>
         <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${substitutes.map(p => `
-            <li class="player-item flex items-center gap-2">
+            <li class="player-item flex items-center gap-2 cursor-pointer">
   <div class="relative">
     <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
     
@@ -666,7 +666,7 @@ console.log('Penalty Block:', penaltyBlock);
             icon = event.event_icon;
         }
          let html =  `
-        <div class="event-item ${isLeft ? 'left' : 'right'}">
+        <div class="event-item ${isLeft ? 'left' : 'right'}" ${event.video_link ? `onclick="window.open('${event.video_link}', '_blank')"` : ''} style="${event.video_link ? 'cursor:pointer;' : ''}">
         ${!isLeft ? '<div style="width:45%"></div>' : ''}
         <div class="event-details">
         <div class="event-icon">${icon}</div>
@@ -1347,6 +1347,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
