@@ -643,6 +643,7 @@ console.log('Penalty Block:', penaltyBlock);
         const subPlayer = event.player_s || null;
         let extraPlayerHTML = '';
         let time = '';
+        let icon = '':
         if (eventOrderMap.hasOwnProperty(event.event_name)){
           playerName='';
           time = event.event_name;
@@ -662,12 +663,13 @@ console.log('Penalty Block:', penaltyBlock);
             extraPlayerHTML = `<div class="event-assist">${event.event_name}</div>`;
           }
             time = cleanMinute(event.minute)|| '';
+            icon = event.event_icon;
         }
          let html =  `
         <div class="event-item ${isLeft ? 'left' : 'right'}">
         ${!isLeft ? '<div style="width:45%"></div>' : ''}
         <div class="event-details">
-        <div class="event-icon"><svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" width="30" height="20">${event.event_icon}</svg></div>
+        <div class="event-icon">${icon}</div>
         <div class="event-text">
         <div class="player-name">${playerName}</div>
         ${extraPlayerHTML}
@@ -1345,6 +1347,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
