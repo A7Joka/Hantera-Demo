@@ -353,10 +353,7 @@ function displayTransfers(transfers) {
     }).join('');
 }
 
-function renderInfo(info,apiUrl, match) {
-  const response = await fetch(apiUrl);
-const data = await response.json();
-    const details = data;
+function renderInfo(info,details, match) {
 let penInfo='';
   const panel = document.getElementById('tab-info');
   if (!info || !match) {
@@ -915,7 +912,7 @@ const data = await response.json();
     if (shouldFetchStreams) {
       await fetchAndDisplayStreams(match);
         }
-    renderInfo(details['Match_Info'],apiUrl, match);
+    renderInfo(details['Match_Info'],details, match);
     renderLineup(details['Lineup'], match);
     renderEvents(details['Events'], details['Penalty_Shootout'], match);
 
@@ -1324,6 +1321,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
