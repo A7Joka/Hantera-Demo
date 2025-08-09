@@ -1292,7 +1292,7 @@ addStreamForm.addEventListener('submit', async (e) => {
     const streamData = {
         channelName: sanitizeInput(document.getElementById('stream-name').value),
         streamType: document.getElementById('stream-type').value,
-        streamUrl: sanitizeInput(document.getElementById('stream-url').value),
+        streamUrl: document.getElementById('stream-url').value,
         keyId: sanitizeInput(document.getElementById('stream-key-id').value || ''),
         key: sanitizeInput(document.getElementById('stream-key').value || '')
     };
@@ -1360,6 +1360,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
