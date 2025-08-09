@@ -644,6 +644,7 @@ console.log('Penalty Block:', penaltyBlock);
         let extraPlayerHTML = '';
         let time = '';
         let icon = '';
+        let iconv = '';
         if (eventOrderMap.hasOwnProperty(event.event_name)){
           playerName='';
           time = event.event_name;
@@ -1352,6 +1353,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
