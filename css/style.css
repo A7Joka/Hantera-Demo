@@ -893,8 +893,14 @@ header ul li a.active {
     height: 30px;
     margin: 10px;
     padding: 5px;
-    background: #1eafb2;
     border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.event-icon svg {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .event-time {
@@ -1350,6 +1356,7 @@ header ul li a.active {
         font-size: 1.5rem;
     }
 }
+
 
 
 
