@@ -664,6 +664,10 @@ console.log('Penalty Block:', penaltyBlock);
           }
             time = cleanMinute(event.minute)|| '';
             icon = event.event_icon;
+            iconv = event.video_link ? `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                <path id="Path_53345" data-name="Path 53345" d="M10,0A10,10,0,1,0,20,10,10,10,0,0,0,10,0Zm4.211,10.319a.714.714,0,0,1-.321.321v0L8.176,13.5a.714.714,0,0,1-1.034-.643V7.143A.714.714,0,0,1,8.176,6.5l5.714,2.857A.714.714,0,0,1,14.211,10.319Z" fill="#5A83FF"></path>
+            </svg>` : '';
         }
          let html =  `
         <div class="event-item ${isLeft ? 'left' : 'right'}" ${event.video_link ? `onclick="window.open('${event.video_link}', '_blank')"` : ''} style="${event.video_link ? 'cursor:pointer;' : ''}">
@@ -674,6 +678,7 @@ console.log('Penalty Block:', penaltyBlock);
         <div class="player-name">${playerName}</div>
         ${extraPlayerHTML}
         </div>
+        <div class="event-icon">${iconv}</div>
         </div>
         <div class="event-time bg-gray-200 dark:bg-gray-900">${time}</div>
         ${isLeft ? '<div style="width:45%"></div>' : ''}
@@ -1347,6 +1352,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
