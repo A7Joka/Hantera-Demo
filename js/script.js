@@ -378,7 +378,7 @@ if (details['Match-Status'] === 'إنتهت المباراة - ركلات الت
     let penResult = `${leftTeam['Penalty-Score']}-${rightTeam['Penalty-Score']}`;
   if(winner){
     penInfo = `
-    <div class="info-item w-max border border-primary dark:border-primary rounded-2xl p-2 m-2">
+    <div class="info-item mx-auto border border-primary dark:border-primary rounded-2xl p-2 m-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
             <path id="Combined_Shape" data-name="Combined Shape" d="M3.222,18.778A11,11,0,1,1,18.778,3.222,11,11,0,1,1,3.222,18.778ZM2,11a9,9,0,1,0,9-9A9.01,9.01,0,0,0,2,11Zm8.294,3.707A1,1,0,1,1,11,15,1,1,0,0,1,10.293,14.707ZM10,11V7a1,1,0,1,1,2,0v4a1,1,0,0,1-2,0Z" transform="translate(0 0)" fill="#1eafb2"></path>
         </svg>
@@ -1324,6 +1324,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
