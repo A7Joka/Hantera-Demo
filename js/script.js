@@ -353,18 +353,21 @@ function displayTransfers(transfers) {
     }).join('');
 }
 
-function renderInfo(info, match) {
-let penInfo;
+function renderInfo(info,apiUrl, match) {
+  const response = await fetch(apiUrl);
+const data = await response.json();
+    const details = data;
+let penInfo='';
   const panel = document.getElementById('tab-info');
   if (!info || !match) {
     panel.innerHTML = "<p style='text-align:center;'>التفاصيل غير متاحة.</p>";
     return;
   }
-  console.log('stat',match['Match-Status']);
-if (match['Match-Status'] === 'إنتهت المباراة - ركلات الترجيح') {
-  console.log('match',match);
-    const rightTeam = match['Team-Right'];
-    const leftTeam = match['Team-Left'];
+  console.log('stat',details['Match-Status']);
+if (details['Match-Status'] === 'إنتهت المباراة - ركلات الترجيح') {
+  console.log('match',details);
+    const rightTeam = details['Team-Right'];
+    const leftTeam = details['Team-Left'];
 
     let winner = '';
     if (rightTeam['Penalty-Score'] > leftTeam['Penalty-Score']) {
@@ -912,7 +915,7 @@ const data = await response.json();
     if (shouldFetchStreams) {
       await fetchAndDisplayStreams(match);
         }
-    renderInfo(details['Match_Info'], match);
+    renderInfo(details['Match_Info'],apiUrl, match);
     renderLineup(details['Lineup'], match);
     renderEvents(details['Events'], details['Penalty_Shootout'], match);
 
@@ -1321,6 +1324,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
