@@ -372,10 +372,11 @@ if (match['Match-Status'] === 'إنتهت المباراة - ركلات التر
     } else if (leftTeam['Penalty-Score'] > rightTeam['Penalty-Score']) {
         winner = leftTeam['Name'];
     } else {
-        winner = 'لم يُحسم';
+        winner = null;
     }
 
     let penResult = `${leftTeam['Penalty-Score']} - ${rightTeam['Penalty-Score']}`;
+  if(winner){
     penInfo = `
     <div class="info-item w-max">
         <span class="info-label text-gray-800 dark:text-gray-100">
@@ -383,8 +384,10 @@ if (match['Match-Status'] === 'إنتهت المباراة - ركلات التر
         </span>
     </div>
     `;
-  console.log('pen',penInfo)
+  }else{
+    penInfo='';
   }
+    console.log('pen',penInfo);
 }
 
 
@@ -1318,6 +1321,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
