@@ -670,7 +670,7 @@ console.log('Penalty Block:', penaltyBlock);
             </svg>` : '';
         }
          let html =  `
-        <div class="event-item ${isLeft ? 'left' : 'right'}" ${event.video_link ? `onclick="window.open('${event.video_link}', '_blank')"` : ''} style="${event.video_link ? 'cursor:pointer;' : ''}">
+        <div class="event-item ${isLeft ? 'left' : 'right'}">
         ${!isLeft ? '<div style="width:45%"></div>' : ''}
         <div class="event-details">
         <div class="event-icon">${icon}</div>
@@ -678,7 +678,7 @@ console.log('Penalty Block:', penaltyBlock);
         <div class="player-name">${playerName}</div>
         ${extraPlayerHTML}
         </div>
-        <div class="event-icon">${iconv}</div>
+        <div class="absolute event-icon ${isLeft ? 'right-0' : 'left-0'}" ${event.video_link ? `onclick="window.open('${event.video_link}', '_blank')"` : ''} style="${event.video_link ? 'cursor:pointer;' : ''}">${iconv}</div>
         </div>
         <div class="event-time bg-gray-200 dark:bg-gray-900">${time}</div>
         ${isLeft ? '<div style="width:45%"></div>' : ''}
@@ -1352,6 +1352,7 @@ export {
   displayStandings,
   showNewsArticle,
 };
+
 
 
 
