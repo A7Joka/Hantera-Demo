@@ -469,20 +469,35 @@ function renderLineup(lineup, match) {
         <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${starters.map(p => `
           <li class="player-item flex items-center gap-2 cursor-pointer">
-  <div class="relative">
-    <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-    
+          <div class="relative">
+    <img src="${p.player.image}" alt="${p.player.title}" 
+         class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
+
+    <!-- رقم اللاعب -->
+    ${p.player.player_number ? `
+      <span class="absolute -top-[6px] -right-[8px] w-[18px] h-[18px] rounded-full flex items-center justify-center 
+                    text-[10px] text-gray-500 dark:text-gray-300 
+                    bg-gray-200 dark:bg-gray-800">
+        ${p.player.player_number}
+      </span>
+    ` : ''}
+
+    <!-- التقييم -->
     ${p.rating !== null ? `
-      <span class="absolute bottom-[-2px] right-[-10px] w-[22px] h-[13px] rounded-[20px] flex items-center justify-center text-white text-[10px]"
+      <span class="absolute -bottom-[2px] -right-[10px] w-[22px] h-[13px] rounded-[20px] flex items-center justify-center 
+                    text-white text-[10px]"
         style="background-color: ${p.rating >= 7 ? '#16a34a' : (p.rating >= 5 ? '#facc15' : '#dc2626')};">
         ${p.rating}
       </span>
     ` : ''}
   </div>
-  <span class="player-name text-sm text-gray-800 dark:text-gray-100" title="#${p.player.player_number ? p.player.player_number + ' - ' : ''}${p.player.position || ''}">
+
+  <span class="player-name text-sm text-gray-800 dark:text-gray-100" 
+        title="${p.player.position || ''}">
     ${p.player.title}
   </span>
-</li>`).join('')}
+</li>
+`).join('')}
         </ul>
       </div>
 
@@ -490,21 +505,36 @@ function renderLineup(lineup, match) {
         <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mt-4 mb-2">الاحتياطي</div>
         <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${substitutes.map(p => `
-            <li class="player-item flex items-center gap-2 cursor-pointer">
+<li class="player-item flex items-center gap-2 cursor-pointer">
   <div class="relative">
-    <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-    
+    <img src="${p.player.image}" alt="${p.player.title}" 
+         class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
+
+    <!-- رقم اللاعب -->
+    ${p.player.player_number ? `
+      <span class="absolute -top-[6px] -right-[8px] w-[18px] h-[18px] rounded-full flex items-center justify-center 
+                    text-[10px] text-gray-500 dark:text-gray-300 
+                    bg-gray-200 dark:bg-gray-800">
+        ${p.player.player_number}
+      </span>
+    ` : ''}
+
+    <!-- التقييم -->
     ${p.rating !== null ? `
-      <span class="absolute bottom-[-2px] right-[-10px] w-[22px] h-[13px] rounded-[20px] flex items-center justify-center text-white text-[10px]"
+      <span class="absolute -bottom-[2px] -right-[10px] w-[22px] h-[13px] rounded-[20px] flex items-center justify-center 
+                    text-white text-[10px]"
         style="background-color: ${p.rating >= 7 ? '#16a34a' : (p.rating >= 5 ? '#facc15' : '#dc2626')};">
         ${p.rating}
       </span>
     ` : ''}
   </div>
-  <span class="player-name text-sm text-gray-800 dark:text-gray-100" title="#${p.player.player_number ? p.player.player_number + ' - ' : ''}${p.player.position || ''}">
+
+  <span class="player-name text-sm text-gray-800 dark:text-gray-100" 
+        title="#${p.player.player_number ? p.player.player_number + ' - ' : ''}${p.player.position || ''}">
     ${p.player.title}
   </span>
-</li>`).join('')}
+</li>
+`).join('')}
         </ul>
         </div>
       </div>
@@ -1360,6 +1390,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
