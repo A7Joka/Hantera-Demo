@@ -668,17 +668,17 @@ function renderEvents(events, match) {
         } else {
             if (subPlayer) {
                 if (event.event_name === 'تبديل لاعب') {
-                    extraPlayerHTML = `<div class="event-assist">خارج: ${playerName}</div>`;
+                    extraPlayerHTML = `<div class="event-assist text-xs sm:text-sm md:text-base lg:text-lg font-medium">خارج: ${playerName}</div>`;
                     playerName = subPlayer;
                 } else {
                     if (event.event_name === 'هدف') {
-                        extraPlayerHTML = `<div class="event-assist">صناعة: ${subPlayer}</div>`;
+                        extraPlayerHTML = `<div class="event-assist text-xs sm:text-sm md:text-base lg:text-lg font-medium">صناعة: ${subPlayer}</div>`;
                     } else {
-                        extraPlayerHTML = `<div class="event-assist">${subPlayer}</div>`;
+                        extraPlayerHTML = `<div class="event-assist text-xs sm:text-sm md:text-base lg:text-lg font-medium">${subPlayer}</div>`;
                     }
                 }
             } else {
-                extraPlayerHTML = `<div class="event-assist">${event.event_name}</div>`;
+                extraPlayerHTML = `<div class="event-assist text-xs sm:text-sm md:text-base lg:text-lg font-medium">${event.event_name}</div>`;
             }
             time = cleanMinute(event.minute) || '';
             icon = event.event_icon;
@@ -693,7 +693,7 @@ function renderEvents(events, match) {
         <div class="event-details">
         <div class="event-icon">${icon}</div>
         <div class="event-text">
-        <div class="player-name">${playerName}</div>
+        <div class="player-name text-xs sm:text-sm md:text-base lg:text-lg font-medium">${playerName}</div>
         ${extraPlayerHTML}
         </div>
         <div class="absolute event-icon ${isLeft ? 'right-0' : 'left-0'}" ${event.video_link ? `onclick="window.open('${event.video_link}', '_blank')"` : ''} style="${event.video_link ? 'cursor:pointer;' : ''}">${iconv}</div>
@@ -1390,6 +1390,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
