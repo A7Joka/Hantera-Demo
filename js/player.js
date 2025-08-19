@@ -34,10 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.loadingSpinner.style.display = 'flex';
         
         const streamInfoUrl = setupConfig.file;
-	const manualDrmKeys = {
- 	 setupConfig.drm
-	};
-
+	    const manualDrmKeys = setupConfig.drm;
 
         const clearKeys = {};
         for (const keyId in manualDrmKeys) {
