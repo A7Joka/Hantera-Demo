@@ -10,7 +10,6 @@ function loadAllData() {
 // FINAL STABLE VERSION - PART 1 of 4
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, setDoc, collection, getDocs, addDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 // --- CONFIG & GLOBAL VARS ---
 const firebaseConfig = {
     apiKey: "AIzaSyB6ACvhgth3VXhoJJnNOZfIQBpXlTVWcGE",
@@ -1442,6 +1441,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
