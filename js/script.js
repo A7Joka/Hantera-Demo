@@ -1325,6 +1325,7 @@ if (button.dataset.type === 'dash-drm') {
     videoPlayerModal.style.display = 'flex';
     setTimeout(() => {
         videoPlayerIframe.contentWindow.postMessage(setupConfig, '*');
+console.log("setupConfig",setupConfig);
     }, 100);
   }
 });
@@ -1441,6 +1442,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
