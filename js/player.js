@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function initializeApp() {
         elements.loadingSpinner.style.display = 'flex';
-        
+        console.log("setupConfig",setupConfig);
         const streamInfoUrl = setupConfig.file;
 	    const manualDrmKeys = setupConfig.drm;
 
