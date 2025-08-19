@@ -1322,7 +1322,7 @@ if (button.dataset.type === 'dash-drm') {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const expandSvg = `
-<svg fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg"
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
      width="22px" height="22px" viewBox="0 0 100 100">
   <g>
     <path d="M22.661,20.5H36c1.104,0,2-0.896,2-2s-0.896-2-2-2H19c-1.104,0-2.5,1.276-2.5,2.381v17c0,1.104,0.896,2,2,2s2-0.896,2-2V24.876l16.042,15.791c0.391,0.391,1.027,0.586,1.539,0.586s1.086-0.195,1.477-0.586c0.781-0.781,0.812-2.237,0.031-3.019L22.661,20.5z"/>
@@ -1634,4 +1634,5 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
