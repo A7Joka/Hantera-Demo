@@ -35,60 +35,79 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function initializeApp() {
-        elements.loadingSpinner.style.display = 'flex';
-        console.log("sConfig",setupConfig);
-        const streamInfoUrl = setupConfig.file;
-	    const manualDrmKeys = setupConfig.drm;
-
-        const clearKeys = {};
-        for (const keyId in manualDrmKeys) {
-            if (manualDrmKeys.hasOwnProperty(keyId)) {
-                clearKeys[keyId] = manualDrmKeys[keyId];
-            }
-        }
-        
-        player.configure({
-            drm: { clearKeys: clearKeys }
-        });
-
-        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-            try {
-                console.log(`[INFO] Attempt ${attempt}: Fetching stream info from: ${streamInfoUrl}`);
-                const response = await fetch(streamInfoUrl);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch stream info: HTTP status ${response.status}`);
-                }
-                const streamData = await response.json();
-                
-                const finalStreamUrl = streamData.channelUrl;
-
-                if (!finalStreamUrl || !finalStreamUrl.startsWith('http')) {
-                    throw new Error("No valid stream URL (channelUrl) found in the response.");
-                }
-                  if (Object.keys(clearKeys).length === 0) {
-                      console.warn("[WARN] No DRM keys provided. Attempting to play without encryption.");
-                  }
-                
-                console.log(`[INFO] Attempt ${attempt}: Loading stream from: ${finalStreamUrl}`);
-                await player.load(finalStreamUrl);
-                
-                console.log('[SUCCESS] Stream loaded successfully.');
-                elements.loadingSpinner.style.display = 'none';
-                showControls();
-                return;
-
-            } catch (error) {
-                console.warn(`[WARN] Attempt ${attempt} failed:`, error.message || error);
-                if (attempt === MAX_RETRIES) {
-                    console.error('[FATAL] All retry attempts failed.', error);
-                    showError('فشل تحميل البث', `لم نتمكن من تشغيل البث بعد ${MAX_RETRIES} محاولات. تأكد من أنك تشغل الصفحة من سيرفر محلي.`);
-                    return;
-                }
-                await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
-            }
+    elements.loadingSpinner.style.display = 'flex';
+    console.log("sConfig", setupConfig);
+    const streamInfoUrl = setupConfig.file;
+    const manualDrmKeys = setupConfig.drm;
+    const clearKeys = {};
+    for (const keyId in manualDrmKeys) {
+        if (manualDrmKeys.hasOwnProperty(keyId)) {
+            clearKeys[keyId] = manualDrmKeys[keyId];
         }
     }
     
+    player.configure({
+        drm: { clearKeys: clearKeys }
+    });
+
+    let successfulMethod = null;
+    let finalStreamUrl = null;
+
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+            if (successfulMethod === 'json') {
+                // إذا نجحت طريقة JSON سابقًا، كررها فقط
+                console.log(`[INFO] Attempt ${attempt}: Retrying with JSON method.`);
+                const response = await fetch(streamInfoUrl);
+                const streamData = await response.json();
+                finalStreamUrl = streamData.channelUrl;
+                if (!finalStreamUrl || !finalStreamUrl.startsWith('http')) {
+                    throw new Error("No valid stream URL (channelUrl) found in the JSON response.");
+                }
+            } else if (successfulMethod === 'direct') {
+                // إذا نجحت الطريقة المباشرة سابقًا، كررها فقط
+                console.log(`[INFO] Attempt ${attempt}: Retrying with direct load method.`);
+                finalStreamUrl = streamInfoUrl;
+            } else {
+                // إذا لم تنجح أي طريقة بعد، جرب الطريقتين بالتناوب
+                if (attempt % 2 !== 0) { // محاولات فردية (1, 3, 5...)
+                    console.log(`[INFO] Attempt ${attempt}: Trying direct load.`);
+                    finalStreamUrl = streamInfoUrl;
+                } else { // محاولات زوجية (2, 4, 6...)
+                    console.log(`[INFO] Attempt ${attempt}: Trying JSON method.`);
+                    const response = await fetch(streamInfoUrl);
+                    const streamData = await response.json();
+                    finalStreamUrl = streamData.channelUrl;
+                    if (!finalStreamUrl || !finalStreamUrl.startsWith('http')) {
+                        throw new Error("No valid stream URL (channelUrl) found in the JSON response.");
+                    }
+                }
+            }
+            
+            // تحميل البث
+            console.log(`[INFO] Loading stream from: ${finalStreamUrl}`);
+            await player.load(finalStreamUrl);
+            
+            // عند النجاح، حدد الطريقة الناجحة للتكرار
+            if (!successfulMethod) {
+                successfulMethod = (attempt % 2 !== 0) ? 'direct' : 'json';
+            }
+            
+            console.log('[SUCCESS] Stream loaded successfully.');
+            elements.loadingSpinner.style.display = 'none';
+            showControls();
+            return;
+        } catch (error) {
+            console.warn(`[WARN] Attempt ${attempt} failed:`, error.message || error);
+            if (attempt === MAX_RETRIES) {
+                console.error('[FATAL] All retry attempts failed.', error);
+                showError('فشل تحميل البث', `لم نتمكن من تشغيل البث بعد ${MAX_RETRIES} محاولات. تأكد من أن الرابط صالح.`);
+                return;
+            }
+            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
+        }
+    }
+}
     function showError(title, message) {
         elements.loadingSpinner.style.display = 'none';
         elements.errorTitle.textContent = title;
