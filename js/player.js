@@ -1,8 +1,8 @@
 let setupConfig;
 document.addEventListener('DOMContentLoaded', () => {
     const expandSvg = `<svg fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" width="22px" height="22px" viewBox="0 0 100 100"><g><path d="M22.661,20.5H36c1.104,0,2-0.896,2-2s-0.896-2-2-2H19c-1.104,0-2.5,1.276-2.5,2.381v17c0,1.104,0.896,2,2,2s2-0.896,2-2V24.876l16.042,15.791c0.391,0.391,1.027,0.586,1.539,0.586s1.086-0.195,1.477-0.586c0.781-0.781,0.812-2.237,0.031-3.019L22.661,20.5z"/><path d="M83,16.5H66c-1.104,0-2,0.896,2,2s0.896,2,2,2h12.605L61.647,37.648c-0.781,0.781-0.781,2.142,0,2.923c0.39,0.391,0.902,0.633,1.414,0.633s0.774-0.171,1.164-0.562l16.274-16.5v11.738c0,1.104,0.896,2,2,2s2-0.896,2-2v-17C84.5,17.776,84.104,16.5,83,16.5z"/><path d="M36.542,60.962L20.5,76.754V65.881c0-1.104-0.896-2-2-2s-2,0.896,2,2v17c0,1.104,1.396,1.619,2.5,1.619h17c1.104,0,2-0.896,2-2s-0.896-2-2-2H22.529L39.62,63.6c0.781-0.781,0.656-1.951-0.125-2.732C38.715,60.086,37.322,60.181,36.542,60.962z"/><path d="M82.5,63.881c-1.104,0-2,0.896-2,2v11.606L64.226,60.962c-0.78-0.781-1.923-0.781-2.703,0c-0.781,0.781-0.719,1.856,0.062,2.638l17.152,16.9H66c-1.104,0-2,0.896-2,2s0.896,2,2,2h17c1.104,0,1.5-0.515,1.5-1.619v-17C84.5,64.776,83.604,63.881,82.5,63.881z"/></g></svg>`;
-    const MAX_RETRIES = 5;
-    const RETRY_DELAY_MS = 1500; 
+    const MAX_RETRIES = 10;
+    const RETRY_DELAY_MS = 3000; 
 
     const elements = {
         video: document.getElementById('video'), playerContainer: document.getElementById('player-container'), videoWrapper: document.getElementById('video-wrapper'),
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function initializeApp() {
         elements.loadingSpinner.style.display = 'flex';
-        console.log("setupConfig",setupConfig);
+        console.log("sConfig",setupConfig);
         const streamInfoUrl = setupConfig.file;
 	    const manualDrmKeys = setupConfig.drm;
 
@@ -179,9 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
     player.addEventListener('error', (event) => { showError('حدث خطأ في المشغل', `فشل تشغيل البث. (${event.detail.message})`); });
     player.addEventListener('trackschanged', () => { populateQualityMenu(); populateAudioMenu(); });
     player.addEventListener('buffering', e => { elements.loadingSpinner.style.display = e.buffering ? 'flex' : 'none'; });
-    
-window.addEventListener('message', (event) => {
+	window.addEventListener('message', (event) => {
     setupConfig = event.data;
-    initializeApp();
-});
+		initializeApp();
+	});
 });
