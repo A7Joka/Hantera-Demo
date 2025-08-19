@@ -1324,6 +1324,9 @@ if (button.dataset.type === 'dash-drm') {
 </html>`;
     videoPlayerIframe.srcdoc = playerHtml;
     videoPlayerModal.style.display = 'flex';
+    setTimeout(() => {
+        videoPlayerIframe.contentWindow.postMessage(setupConfig, '*');
+    }, 100);
   }
 });
 function sanitizeInput(input) {
@@ -1439,6 +1442,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
