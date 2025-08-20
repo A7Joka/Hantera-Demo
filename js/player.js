@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     messageTimeout = setTimeout(() => {
         console.error("مشكلة في الاتصال: لم يتم استلام رسالة التهيئة خلال 5 ثوانٍ.");
     }, 5000);
-});
+
 window.addEventListener('message', (event) => {
     if (messageTimeout) {
         clearTimeout(messageTimeout);
