@@ -917,7 +917,7 @@ async function fetchEventsAndLineup(match) {
             if (modifier === 'ص' && hours === 12) hours = 0;
             return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
         }
-        if (matchStatus === 'status-live'){
+        if (matchStatus === 'status-live'||matchStatus === 'status-finished'){
             await fetchAndDisplayStreams(match);
         }
         if (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'المباراة تأجلت' || match['Match-Status'] === 'المباراة الغيت') {
@@ -1442,6 +1442,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
