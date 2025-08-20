@@ -1323,10 +1323,19 @@ if (button.dataset.type === 'dash-drm') {
 </html>`;
     videoPlayerIframe.srcdoc = playerHtml;
     videoPlayerModal.style.display = 'flex';
-    setTimeout(() => {
-        videoPlayerIframe.contentWindow.postMessage(setupConfig, '*');
-console.log("setupConfig",setupConfig);
-    }, 100);
+        videoPlayerIframe.onload = () => {
+            videoPlayerIframe.contentWindow.postMessage(setupConfig, '*');
+            console.log("setupConfig", setupConfig);
+            // إزالة الحدث onload بعد التشغيل لضمان عدم تكرار العملية
+            videoPlayerIframe.onload = null;
+        };
+
+        // ملاحظة: إذا كان الإطار الفرعي قد تم تحميله بالفعل في بعض الحالات،
+        // يمكن أن لا يتم تشغيل حدث onload. لذا يُفضل إضافة تحقق مباشر:
+        if (videoPlayerIframe.contentDocument.readyState === 'complete') {
+            videoPlayerIframe.contentWindow.postMessage(setupConfig, '*');
+            console.log("setupConfig", setupConfig);
+        }
   }
 });
 function sanitizeInput(input) {
@@ -1442,6 +1451,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
